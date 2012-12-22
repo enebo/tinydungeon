@@ -121,7 +121,13 @@ EOS
     end
     destination = manager[destination_uuid]
 
-    room_for(cmd.entity).add Link.new(directions, destination)
+    room = room_for(cmd.entity)
+    if Container.one_for(destination)
+      room.add Link.new(directions, destination)
+    else 
+      puts "You cannot open into a non-room"
+      return
+    end
     
     if !num
       puts "Created unlinked exit"
