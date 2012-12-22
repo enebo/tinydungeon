@@ -59,11 +59,11 @@ class ProcessCommandsSystem < Wreckem::System
     else
       new_room = manager[link.destination]
       Location.one_for(person).uuid = new_room.uuid
-      container = Container.one_for(new_room)
-      container << person
+      new_room.add Containing.new(person.uuid)
 
-      container = Container.one_for(room)
-      container.delete(person)
+      Containing.for(room).each do |l|
+        l.delete if l.uuid == person.uuid
+      end
 
       command_look(cmd)
     end
@@ -92,8 +92,8 @@ EOS
     puts ""
     puts "Thing here:"
 
-    container = Container.one_for(room)
-    container.contents.each do |e|
+    Containing.for(room) do |l|
+      e = manager[l.uuid]
       name, desc = Name.one_for(e), Description.one_for(e)
       puts "   #{name.value} - #{desc.value} #{e == player ? '[you]' : ''}"
     end
