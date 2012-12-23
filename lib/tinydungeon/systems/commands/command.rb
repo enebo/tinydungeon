@@ -26,6 +26,11 @@ class Command
   ##
   # return multi-line specific help for the command
   def help
+    <<EOS
+#{description}"
+
+Usage: #{usage}
+EOS
   end
 
   def game

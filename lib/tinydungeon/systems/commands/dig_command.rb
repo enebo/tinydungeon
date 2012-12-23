@@ -9,7 +9,7 @@ class DigCommand < Command
   end
 
   def description
-    "create a new room"
+    "Dig (create) a new room"
   end
 
   def usage
@@ -17,10 +17,7 @@ class DigCommand < Command
   end
 
   def help
-    <<EOS
-Dig (create) a new room with name the specified name.
-
-Usage: #{usage}
+    super + <<EOS
 
 {name} can be almost any string so long as it does not already exist
 as a string in the system.

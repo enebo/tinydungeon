@@ -32,7 +32,7 @@ class LookCommand < Command
   end
 
   def description
-    "display contents of current room"
+    "Display contents of current room"
   end
 
   def usage
@@ -40,10 +40,7 @@ class LookCommand < Command
   end
 
   def help
-    <<-EOS
-Look at the contents of the current room.
-
-Usage: #{usage}
+    super + <<-EOS
 
 The room name and description are printed along with two possible lists.
 The first list is all the items and players which happen to be in the room.

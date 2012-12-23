@@ -31,10 +31,7 @@ class HelpCommand < Command
   end
 
   def help
-    <<EOS
-#{description}
-
-Usage: #{usage}
+    super + <<EOS
 
 You can get a generic list of all commands or specific help on a command.
 

@@ -39,10 +39,7 @@ class OpenCommand < Command
   end
 
   def help
-    <<EOS
-#{description}
-
-Usage: #{usage}
+    super + <<EOS
 
 You can open/create a linked or an unlinked exit.  In unlinked then trying 
 to travel through it will give you an ofail message and everyone else will 

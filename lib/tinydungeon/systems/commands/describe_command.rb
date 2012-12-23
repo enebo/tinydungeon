@@ -21,7 +21,7 @@ class DescribeCommand < Command
   end
 
   def description
-    "see of set description of an object"
+    "See or set description of an object"
   end
 
   def usage
@@ -29,10 +29,7 @@ class DescribeCommand < Command
   end
 
   def help
-    <<EOS
-See or set the description of any object.  
-
-Usage: #{usage}
+    super + <<EOS
 
 {object} can be number, name, 'here', or 'me'.  If you omit
 ={description} then it just displays the current description.

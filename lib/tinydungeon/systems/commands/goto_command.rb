@@ -37,12 +37,8 @@ class GotoCommand < Command
     "goto {direction}"
   end
 
-  # FIXME: consider making base class have smoething more generic
   def help
-    <<EOS
-#{description}"
-
-Usage: #{usage}
+    super + <<EOS
 
 {object} can be number, name, 'here', or 'me'.  If you omit
 ={description} then it just displays the current description.
