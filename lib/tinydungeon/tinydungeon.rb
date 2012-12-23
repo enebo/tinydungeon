@@ -2,7 +2,6 @@ require 'wreckem'
 require 'wreckem/game'
 require 'wreckem/entity_manager'
 
-require 'tinydungeon/components/command'
 require 'tinydungeon/components/contained_by'
 require 'tinydungeon/components/containee'
 require 'tinydungeon/components/container'

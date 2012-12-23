@@ -1,6 +1,6 @@
 require 'wreckem/component'
 
-class Command < Wreckem::Component
+class CommandLine < Wreckem::Component
   attr_reader :line
 
   def initialize(line)
