@@ -1,6 +1,6 @@
 require 'wreckem/component'
 
-class Location < Wreckem::Component
+class ContainedBy < Wreckem::Component
   attr_accessor :uuid
 
   def initialize(uuid)

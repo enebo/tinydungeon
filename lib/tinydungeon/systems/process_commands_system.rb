@@ -58,7 +58,7 @@ class ProcessCommandsSystem < Wreckem::System
       say "No such exit"
     else
       new_room = manager[link.destination]
-      Location.one_for(person).uuid = new_room.uuid
+      ContainedBy.one_for(person).uuid = new_room.uuid
       new_room.add Containee.new(person.uuid)
 
       Containee.for(room).each do |l|
@@ -85,7 +85,7 @@ EOS
 
   def command_look(cmd)
     player = cmd.entity
-    room = manager[Location.one_for(player).uuid]
+    room = manager[ContainedBy.one_for(player).uuid]
     title, desc = Name.one_for(room), Description.one_for(room)
 
     puts "#{title.value} - #{desc.value}"
@@ -154,7 +154,7 @@ EOS
 
   def name_to_object_info(issuer, name)
     if name == "here"
-      entity = manager[Location.one_for(issuer).uuid]
+      entity = manager[ContainedBy.one_for(issuer).uuid]
       name = Name.one_for(entity)
       num = namedb.name_map[name]
     elsif name =~ /^\d+$/
@@ -170,7 +170,7 @@ EOS
   private :name_to_object_info
 
   def room_for(entity)
-    manager[Location.one_for(entity).uuid]
+    manager[ContainedBy.one_for(entity).uuid]
   end
 
   def rest(line)
