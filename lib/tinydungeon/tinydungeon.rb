@@ -4,7 +4,7 @@ require 'wreckem/entity_manager'
 
 require 'tinydungeon/components/command'
 require 'tinydungeon/components/container'
-require 'tinydungeon/components/containing'
+require 'tinydungeon/components/containee'
 require 'tinydungeon/components/description'
 require 'tinydungeon/components/location'
 require 'tinydungeon/components/name'
@@ -24,12 +24,12 @@ class TinyDungeon < Wreckem::Game
     player = create_object('Vorne', 'A dashing adventurer')
     player.is Player
     player.has Location.new(room.uuid)
-    room.add Containing.new(player.uuid)
+    room.add Containee.new(player.uuid)
 
     goblin = create_object('Goblozowie', "a green, nasty looking goblin")
     goblin.is NPC
     goblin.has Location.new(room.uuid)
-    room.add Containing.new(goblin.uuid)
+    room.add Containee.new(goblin.uuid)
   end
 
   def register_systems

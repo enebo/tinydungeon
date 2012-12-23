@@ -59,9 +59,9 @@ class ProcessCommandsSystem < Wreckem::System
     else
       new_room = manager[link.destination]
       Location.one_for(person).uuid = new_room.uuid
-      new_room.add Containing.new(person.uuid)
+      new_room.add Containee.new(person.uuid)
 
-      Containing.for(room).each do |l|
+      Containee.for(room).each do |l|
         l.delete if l.uuid == person.uuid
       end
 
@@ -92,7 +92,7 @@ EOS
     puts ""
     puts "Thing here:"
 
-    Containing.for(room) do |l|
+    Containee.for(room) do |l|
       e = manager[l.uuid]
       name, desc = Name.one_for(e), Description.one_for(e)
       puts "   #{name.value} - #{desc.value} #{e == player ? '[you]' : ''}"
@@ -121,9 +121,8 @@ EOS
     end
     destination = manager[destination_uuid]
 
-    room = room_for(cmd.entity)
     if Container.one_for(destination)
-      room.add Link.new(directions, destination)
+      room_for(cmd.entity).add Link.new(directions, destination)
     else 
       puts "You cannot open into a non-room"
       return
