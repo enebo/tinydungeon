@@ -6,6 +6,8 @@ require 'tinydungeon/components/description'
 require 'tinydungeon/components/link'
 require 'tinydungeon/components/name'
 
+require 'tinydungeon/components/command_line'
+
 class LookCommand < Command
   def execute(cmd)
     player = cmd.entity

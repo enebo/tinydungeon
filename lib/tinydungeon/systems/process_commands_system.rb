@@ -10,6 +10,7 @@ require 'tinydungeon/systems/commands/help_command'
 require 'tinydungeon/systems/commands/look_command'
 require 'tinydungeon/systems/commands/open_command'
 require 'tinydungeon/systems/commands/quit_command'
+require 'tinydungeon/systems/commands/save_command'
 require 'tinydungeon/systems/commands/say_command'
 
 class ProcessCommandsSystem < Wreckem::System
@@ -25,6 +26,7 @@ class ProcessCommandsSystem < Wreckem::System
       'look' => LookCommand.new(self),
       '@open' => OpenCommand.new(self),
       'QUIT' => QuitCommand.new(self),
+      'save' => SaveCommand.new(self),
       'say' => SayCommand.new(self),
     }
     @commands['goto'] = GotoCommand.new(self, @commands['look'])

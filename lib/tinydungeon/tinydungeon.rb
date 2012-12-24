@@ -16,7 +16,9 @@ require 'tinydungeon/systems/process_commands_system'
 
 class TinyDungeon < Wreckem::Game
   def register_entities
-    manager.create { |e| e.has NameDB.new }
+    p manager.size
+    return if manager.size > 0 # Already loaded..hacky
+    manager.create_entity { |e| e.has NameDB.new }
 
     room = create_room("Entry", "a room with stone walls and a musty smell")
 
@@ -40,7 +42,7 @@ class TinyDungeon < Wreckem::Game
 
   def create_object(name, description)
     obj_name = Name.new(name)
-    obj = manager.create do |e|
+    obj = manager.create_entity do |e|
       e.has obj_name
       e.has Description.new(description)
     end
