@@ -9,9 +9,9 @@ class AcquireCommandsSystem < Wreckem::System
   end
 
   def process
-    Player.all do |player|
+    Player.entities do |player|
       print "> "
-      player.entity.add CommandLine.new($stdin.gets.chomp)
+      player.add CommandLine.new($stdin.gets.chomp)
     end
   end
 end
