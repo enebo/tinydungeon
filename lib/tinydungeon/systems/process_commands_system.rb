@@ -37,8 +37,8 @@ class ProcessCommandsSystem < Wreckem::System
     CommandLine.all do |cmd|
       next unless /(?<command>[\S]+)/ =~ cmd.line
       object = @commands[command] || @commands['say']
-      object.execute(cmd)
       cmd.delete
+      object.execute(cmd)
     end
   end
 end

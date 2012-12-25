@@ -13,14 +13,15 @@ require 'tinydungeon/components/player'
 
 require 'tinydungeon/systems/acquire_commands_system'
 require 'tinydungeon/systems/process_commands_system'
+require 'tinydungeon/systems/hear_things_system'
 
 class TinyDungeon < Wreckem::Game
   def register_entities
-    p manager.size
     return if manager.size > 0 # Already loaded..hacky
     manager.create_entity { |e| e.has NameDB.new }
 
-    room = create_room("Entry", "a room with stone walls and a musty smell")
+    room = create_room("Echo Chamber", "A round domed room")
+    room.is Echo
 
     player = create_object('Vorne', 'A dashing adventurer')
     player.is Player
@@ -36,6 +37,7 @@ class TinyDungeon < Wreckem::Game
   def register_systems
     systems << AcquireCommandsSystem.new(self)
     systems << ProcessCommandsSystem.new(self)
+    systems << HearThingsSystem.new(self)
   end
 
   # Creators/Templates

@@ -7,6 +7,7 @@ class NameDB < Wreckem::Component
   attr_accessor :next_number
 
   def initialize
+    super()
     @name_map = {}
     @num_map = {}
     @next_number = 0

@@ -1,4 +1,5 @@
 require 'tinydungeon/components/contained_by'
+require 'tinydungeon/components/message'
 require 'tinydungeon/components/name'
 
 class Command
@@ -43,6 +44,22 @@ EOS
 
   def namedb
     system.namedb
+  end
+
+  def say_to_player(msg)
+    puts msg
+  end
+
+  def say_to_room(sender, msg)
+    message = Message.new msg
+    room = manager[ContainedBy.one_for(sender).uuid]
+
+    room.add message # Let room react to hearing a message
+
+    Containee.for(room) do |l|
+      entity = manager[l.uuid]
+      entity.add message if entity != sender
+    end
   end
 
   def name_to_object_info(issuer, name)

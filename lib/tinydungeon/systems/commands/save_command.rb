@@ -3,6 +3,7 @@ require 'tinydungeon/systems/commands/command'
 class SaveCommand < Command
   def execute(cmd)
     manager.save
+    puts "World Saved."
   end
 
   def description
