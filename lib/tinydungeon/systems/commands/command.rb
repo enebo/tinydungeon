@@ -47,12 +47,12 @@ EOS
   end
 
   def say_to_player(sender, msg)
-    sender.add Message.new(ContainedBy.one_for(sender).uuid, msg)
+    sender.add Message.new(sender.one(ContainedBy).uuid, msg)
   end
 
   # Let the room and all items in the room hear what you said (except you)
   def say_to_room(sender, msg)
-    room_uuid = ContainedBy.one_for(sender).uuid
+    room_uuid = sender.one(ContainedBy).uuid
     room = manager[room_uuid]
 
     room.add Message.new(room_uuid, msg)
@@ -65,13 +65,13 @@ EOS
 
   def name_to_object_info(issuer, name)
     if name == "here"
-      entity = manager[ContainedBy.one_for(issuer).uuid]
-      name = Name.one_for(entity)
+      entity = manager[issue.one(ContainedBy).uuid]
+      name = entity.one(Name)
       num = namedb.name_map[name]
     elsif name =~ /^\d+$/
       num = name.to_i
       entity = manager[namedb.num_map[num]]
-      name = Name.one_for(entity)
+      name = entity.one(Name)
     else
       num = namedb.name_map[name]
       entity = manager[namedb.num_map[num]]
@@ -80,7 +80,7 @@ EOS
   end
 
   def room_for(entity)
-    manager[ContainedBy.one_for(entity).uuid]
+    manager[entity.one(ContainedBy).uuid]
   end
 
   def rest(line)

@@ -21,10 +21,10 @@ class GotoCommand < Command
       say_to_player(person, "No such exit")
     else
       dir = link.directions[0]
-      say_to_room person, "#{Name.one_for(person).value} went #{dir}."
+      say_to_room person, "#{person.one(Name).value} went #{dir}."
       say_to_player person, "You go #{dir}"
       new_room = manager[link.destination]
-      ContainedBy.one_for(person).uuid = new_room.uuid
+      person.one(ContainedBy).uuid = new_room.uuid
       new_room.add Containee.new(person.uuid)
       # FIXME: find then delete since an object should only exist in one place
       Containee.for(room).each { |l| l.delete if l.uuid == person.uuid }

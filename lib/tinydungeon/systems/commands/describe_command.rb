@@ -9,9 +9,9 @@ class DescribeCommand < Command
       
     if entity
       if cmd.line !~ %r{=(.*)}
-        say_to_player cmd.entity, "#{name.value}(\##{num}) = #{Description.one_for(entity).value}"
+        say_to_player cmd.entity, "#{name.value}(\##{num}) = #{entity.one(Description).value}"
       else
-        Description.one_for(entity).value = description if entity
+        entity.one(Description).value = description if entity
         say_to_player cmd.entity, "#{name.value}(\##{num}) changed to #{description}."
       end
     else

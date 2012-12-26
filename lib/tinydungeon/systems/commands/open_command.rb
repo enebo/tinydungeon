@@ -16,7 +16,7 @@ class OpenCommand < Command
     end
     destination = manager[destination_uuid]
 
-    if Container.one_for(destination)
+    if destination.one(Container)
       room_for(cmd.entity).add Link.new(directions, destination)
     else 
       say_to_player cmd.entity, "You cannot open into a non-room"
@@ -26,7 +26,7 @@ class OpenCommand < Command
     if !num
       say_to_player cmd.entity, "Created unlinked exit"
     else
-      say_to_player cmd.entity, "Created exit to: #{Name.one_for(destination).value}"
+      say_to_player cmd.entity, "Created exit to: #{destination.one(Name).value}"
     end
   end
 

@@ -21,12 +21,12 @@ class HearThingsSystem < Wreckem::System
       where = manager[message.location]
 
       if receiver.is?(Player)
-        room = manager[ContainedBy.one_for(receiver).uuid]
+        room = manager[receiver.one(ContainedBy).uuid]
         puts message.line if room == where
       end
 
       if receiver.is?(NPC)
-        room = manager[ContainedBy.one_for(receiver).uuid]
+        room = manager[receiver.one(ContainedBy).uuid]
 
         if room == where && directions_for(room)[message.line]
           cl = CommandLine.new("goto #{message.line}")

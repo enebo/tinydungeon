@@ -11,8 +11,8 @@ require 'tinydungeon/components/command_line'
 class LookCommand < Command
   def execute(cmd)
     player = cmd.entity
-    room = manager[ContainedBy.one_for(player).uuid]
-    title, desc = Name.one_for(room), Description.one_for(room)
+    room = manager[player.one(ContainedBy).uuid]
+    title, desc = room.one(Name), room.one(Description)
 
     message = <<-EOS
 #{title.value} - #{desc.value}
@@ -22,7 +22,7 @@ Things here:
 
     Containee.for(room) do |l|
       e = manager[l.uuid]
-      name, desc = Name.one_for(e), Description.one_for(e)
+      name, desc = e.one(Name), e.one(Description)
       message << "   #{name.value} - #{desc.value} #{e == player ?'[you]':''}\n"
     end
 
