@@ -1,11 +1,11 @@
 require 'wreckem/component'
 
 class Message < Wreckem::Component
-  attr_reader :line
+  attr_reader :location, :line
 
-  def initialize(line)
+  def initialize(location, line)
     super()
-    @line = line
+    @location, @line = location, line
   end
 end
 

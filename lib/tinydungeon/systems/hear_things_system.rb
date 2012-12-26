@@ -18,23 +18,28 @@ class HearThingsSystem < Wreckem::System
     new_messages = []
     Message.all do |message|
       receiver = message.entity
+      where = manager[message.location]
 
-      puts message.line if receiver.is?(Player)
+      if receiver.is?(Player)
+        room = manager[ContainedBy.one_for(receiver).uuid]
+        puts message.line if room == where
+      end
 
       if receiver.is?(NPC)
         room = manager[ContainedBy.one_for(receiver).uuid]
 
-        if directions_for(room)[message.line]
+        if room == where && directions_for(room)[message.line]
           cl = CommandLine.new("goto #{message.line}")
           receiver.add cl
           @commands['goto'].execute(cl)
           receiver.delete cl
+          process
         end
       end
       if receiver.has?(Echo)
         echo_string = "You hear an echo, \"#{message.line}\""
         Containee.for(receiver) do |l|
-          new_messages << [manager[l.uuid], Message.new(echo_string)]
+          new_messages << [manager[l.uuid], Message.new(receiver, echo_string)]
         end
       end
       receiver.delete message

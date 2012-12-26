@@ -47,18 +47,19 @@ EOS
   end
 
   def say_to_player(sender, msg)
-    sender.add Message.new(msg)
+    sender.add Message.new(ContainedBy.one_for(sender).uuid, msg)
   end
 
   # Let the room and all items in the room hear what you said (except you)
   def say_to_room(sender, msg)
-    room = manager[ContainedBy.one_for(sender).uuid]
+    room_uuid = ContainedBy.one_for(sender).uuid
+    room = manager[room_uuid]
 
-    room.add Message.new(msg)
+    room.add Message.new(room_uuid, msg)
 
     Containee.for(room).each do |l|
       entity = manager[l.uuid]
-      entity.add Message.new(msg) if entity != sender
+      entity.add Message.new(room_uuid, msg) if entity != sender
     end
   end
 
