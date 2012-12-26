@@ -14,7 +14,7 @@ require 'tinydungeon/systems/commands/save_command'
 require 'tinydungeon/systems/commands/say_command'
 
 class ProcessCommandsSystem < Wreckem::System
-  attr_reader :namedb
+  attr_reader :namedb, :commands
 
   def initialize(game)
     super(game)

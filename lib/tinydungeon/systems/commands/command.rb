@@ -46,19 +46,19 @@ EOS
     system.namedb
   end
 
-  def say_to_player(msg)
-    puts msg
+  def say_to_player(sender, msg)
+    sender.add Message.new(msg)
   end
 
+  # Let the room and all items in the room hear what you said (except you)
   def say_to_room(sender, msg)
-    message = Message.new msg
     room = manager[ContainedBy.one_for(sender).uuid]
 
-    room.add message # Let room react to hearing a message
+    room.add Message.new(msg)
 
-    Containee.for(room) do |l|
+    Containee.for(room).each do |l|
       entity = manager[l.uuid]
-      entity.add message if entity != sender
+      entity.add Message.new(msg) if entity != sender
     end
   end
 

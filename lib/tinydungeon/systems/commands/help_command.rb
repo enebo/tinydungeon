@@ -10,15 +10,16 @@ class HelpCommand < Command
     if command_name
       command = @commands[command_name.strip]
       if !command
-        puts "No such command for help: #{command_name.strip}"
+        say_to_player cmd.entity, "No such command for help: #{command_name.strip}"
       else
-        puts command.help
+        say_to_player cmd.entity, command.help
       end
     else
-      @commands.sort.each do |k, v|
-        puts "#{v.usage}"
-        puts "    #{v.description}"
+      help = @commands.sort.inject do |s, (k, v)|
+        s << "#{v.usage}\n"
+        s << "    #{v.description}\n"
       end
+      say_to_player cmd.entity, help
     end
   end
 

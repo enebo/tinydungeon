@@ -14,23 +14,25 @@ class LookCommand < Command
     room = manager[ContainedBy.one_for(player).uuid]
     title, desc = Name.one_for(room), Description.one_for(room)
 
-    puts "#{title.value} - #{desc.value}"
-    puts ""
-    puts "Thing here:"
+    message = <<-EOS
+#{title.value} - #{desc.value}
+
+Things here:
+    EOS
 
     Containee.for(room) do |l|
       e = manager[l.uuid]
       name, desc = Name.one_for(e), Description.one_for(e)
-      puts "   #{name.value} - #{desc.value} #{e == player ? '[you]' : ''}"
+      message << "   #{name.value} - #{desc.value} #{e == player ?'[you]':''}\n"
     end
 
     links = Link.for(room)
     unless links.empty?
-      puts "Exits:"
-      links.each do |link|
-        puts "    #{link.directions[0]}"
-      end
+      message << "\nExits: "
+      message << links.map { |link| link.directions[0] }.join(", ")
+      message << "\n"
     end
+    say_to_player player, message
   end
 
   def description

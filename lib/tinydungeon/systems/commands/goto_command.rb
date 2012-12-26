@@ -3,6 +3,7 @@ require 'tinydungeon/systems/commands/command'
 require 'tinydungeon/components/contained_by'
 require 'tinydungeon/components/containee'
 require 'tinydungeon/components/link'
+require 'tinydungeon/components/name'
 
 class GotoCommand < Command
   def initialize(system, look_command)
@@ -17,8 +18,11 @@ class GotoCommand < Command
     link = Link.for(room).find {|link| link.directions.include?(direction) }
 
     if !link
-      say "No such exit"
+      say_to_player(person, "No such exit")
     else
+      dir = link.directions[0]
+      say_to_room person, "#{Name.one_for(person).value} went #{dir}."
+      say_to_player person, "You go #{dir}"
       new_room = manager[link.destination]
       ContainedBy.one_for(person).uuid = new_room.uuid
       new_room.add Containee.new(person.uuid)

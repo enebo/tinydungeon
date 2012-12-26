@@ -36,8 +36,9 @@ class TinyDungeon < Wreckem::Game
 
   def register_systems
     systems << AcquireCommandsSystem.new(self)
-    systems << ProcessCommandsSystem.new(self)
-    systems << HearThingsSystem.new(self)
+    process_commands_system = ProcessCommandsSystem.new(self)
+    systems << process_commands_system
+    systems << HearThingsSystem.new(self, process_commands_system.commands)
   end
 
   # Creators/Templates

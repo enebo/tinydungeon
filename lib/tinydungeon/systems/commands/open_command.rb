@@ -11,7 +11,7 @@ class OpenCommand < Command
 
     destination_uuid = namedb.num_map[num.to_i]
     if !destination_uuid && num
-      puts "Error: No such room number (#{num})"
+      say_to_player cmd.entity, "Error: No such room number (#{num})"
       return
     end
     destination = manager[destination_uuid]
@@ -19,14 +19,14 @@ class OpenCommand < Command
     if Container.one_for(destination)
       room_for(cmd.entity).add Link.new(directions, destination)
     else 
-      puts "You cannot open into a non-room"
+      say_to_player cmd.entity, "You cannot open into a non-room"
       return
     end
     
     if !num
-      puts "Created unlinked exit"
+      say_to_player cmd.entity, "Created unlinked exit"
     else
-      puts "Created exit to: #{Name.one_for(destination).value}"
+      say_to_player cmd.entity, "Created exit to: #{Name.one_for(destination).value}"
     end
   end
 

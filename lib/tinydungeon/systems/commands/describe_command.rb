@@ -9,15 +9,14 @@ class DescribeCommand < Command
       
     if entity
       if cmd.line !~ %r{=(.*)}
-        puts "#{name.value}(\##{num}) = #{Description.one_for(entity).value}"
+        say_to_player cmd.entity, "#{name.value}(\##{num}) = #{Description.one_for(entity).value}"
       else
         Description.one_for(entity).value = description if entity
-        puts "#{name.value}(\##{num}) changed to #{description}."
+        say_to_player cmd.entity, "#{name.value}(\##{num}) changed to #{description}."
       end
     else
-      puts "No such object named: #{name}"
+      say_to_player cmd.entity, "No such object named: #{name}"
     end
-    puts "You say, '#{cmd.line}'"
   end
 
   def description
