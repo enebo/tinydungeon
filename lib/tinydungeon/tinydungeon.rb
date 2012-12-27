@@ -5,6 +5,7 @@ require 'wreckem/entity_manager'
 require 'tinydungeon/game_components'
 
 require 'tinydungeon/systems/helpers/container_helper'
+require 'tinydungeon/systems/helpers/link_helper'
 
 require 'tinydungeon/systems/acquire_commands_system'
 require 'tinydungeon/systems/process_commands_system'
@@ -12,7 +13,7 @@ require 'tinydungeon/systems/hear_things_system'
 
 class TinyDungeon < Wreckem::Game
   attr_reader :connections, :players, :entry
-  include ContainerHelper
+  include ContainerHelper, LinkHelper
 
   def initialize
     super()

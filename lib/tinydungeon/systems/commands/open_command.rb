@@ -8,23 +8,22 @@ class OpenCommand < Command
 
     destination_uuid = namedb.num_map[num.to_i]
     if !destination_uuid && num
-      say_to_player cmd.entity, "Error: No such room number (#{num})"
+      say_to_player cmd.entity, "Error: No such room number (\##{num})"
       return
     end
-    destination = manager[destination_uuid]
 
-    if destination.one(Container)
-      room_for(cmd.entity).add Link.new(directions, destination)
+    destination_room = manager[destination_uuid]
+    if destination_room.is? Container
+      source_room = room_for(cmd.entity)
+      link = game.create_link(source_room, destination_room, directions)
     else 
       say_to_player cmd.entity, "You cannot open into a non-room"
       return
     end
     
-    if !num
-      say_to_player cmd.entity, "Created unlinked exit"
-    else
-      say_to_player cmd.entity, "Created exit to: #{destination.one(Name).value}"
-    end
+    status = !num ? "Created unlinked exit" : 
+      "Created exit to: #{link.one(Name).value}"
+    say_to_player cmd.entity, status
   end
 
   def description

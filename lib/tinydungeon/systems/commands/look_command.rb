@@ -1,17 +1,14 @@
 require 'tinydungeon/systems/commands/command'
 
-require 'tinydungeon/components/contained_by'
-require 'tinydungeon/components/containee'
-require 'tinydungeon/components/description'
-require 'tinydungeon/components/link'
-require 'tinydungeon/components/name'
-
-require 'tinydungeon/components/command_line'
+require 'tinydungeon/game_components'
+require 'tinydungeon/systems/helpers/link_helper'
 
 class LookCommand < Command
+  include LinkHelper
+
   def execute(cmd)
     player = cmd.entity
-    room = manager[player.one(ContainedBy).uuid]
+    room = manager[player.one(ContainedBy).value]
     title, desc = room.one(Name), room.one(Description)
 
     message = <<-EOS
@@ -21,17 +18,15 @@ Things here:
     EOS
 
     Containee.for(room) do |l|
-      e = manager[l.uuid]
+      e = manager[l.value]
       name, desc = e.one(Name), e.one(Description)
       message << "   #{name.value} - #{desc.value} #{e == player ?'[you]':''}\n"
     end
 
-    links = Link.for(room)
-    unless links.empty?
-      message << "\nExits: "
-      message << links.map { |link| link.directions[0] }.join(", ")
-      message << "\n"
-    end
+    links = link_names(room)
+
+    message << "\nExits: #{links.join(', ')}\n" unless links.empty?
+
     say_to_player player, message
   end
 

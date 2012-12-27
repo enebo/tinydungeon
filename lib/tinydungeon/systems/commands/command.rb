@@ -1,6 +1,4 @@
-require 'tinydungeon/components/contained_by'
-require 'tinydungeon/components/message'
-require 'tinydungeon/components/name'
+require 'tinydungeon/game_components'
 
 class Command
   attr_reader :system
@@ -47,25 +45,25 @@ EOS
   end
 
   def say_to_player(sender, msg)
-    sender.add Message.new(sender.one(ContainedBy).uuid, msg)
+    sender.add Message.new(sender.one(ContainedBy).value, msg)
   end
 
   # Let the room and all items in the room hear what you said (except you)
   def say_to_room(sender, msg)
-    room_uuid = sender.one(ContainedBy).uuid
+    room_uuid = sender.one(ContainedBy).value
     room = manager[room_uuid]
 
     room.add Message.new(room_uuid, msg)
 
     Containee.for(room).each do |l|
-      entity = manager[l.uuid]
+      entity = manager[l.value]
       entity.add Message.new(room_uuid, msg) if entity != sender
     end
   end
 
   def name_to_object_info(issuer, name)
     if name == "here"
-      entity = manager[issuer.one(ContainedBy).uuid]
+      entity = manager[issuer.one(ContainedBy).value]
       name = entity.one(Name)
       num = namedb.name_map[name]
     elsif name == "me"
@@ -84,7 +82,7 @@ EOS
   end
 
   def room_for(entity)
-    manager[entity.one(ContainedBy).uuid]
+    manager[entity.one(ContainedBy).value]
   end
 
   def rest(line)

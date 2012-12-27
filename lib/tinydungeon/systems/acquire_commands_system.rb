@@ -68,7 +68,7 @@ class AcquireCommandsSystem < Wreckem::System
       else
         # FIXME: On crash lastcontained by may not exist and use contained by
         last_room = player.one(LastContainedBy)
-        room = manager[last_room.uuid]
+        room = manager[last_room.value]
         if last_room and room
           player.delete last_room
         else

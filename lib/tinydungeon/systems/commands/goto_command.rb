@@ -1,11 +1,13 @@
 require 'tinydungeon/systems/commands/command'
 
-require 'tinydungeon/components/link'
-require 'tinydungeon/components/name'
+require 'tinydungeon/game_components'
 
 require 'tinydungeon/systems/helpers/container_helper'
+require 'tinydungeon/systems/helpers/link_helper'
 
 class GotoCommand < Command
+  include ContainerHelper, LinkHelper
+
   def initialize(system, look_command)
     super(system)
     @look_command = look_command
@@ -15,20 +17,25 @@ class GotoCommand < Command
     direction = rest(cmd.line)
     person = cmd.entity
     room = room_for(person)
-    link = Link.for(room).find {|link| link.directions.include?(direction) }
+    link = link_for(room, direction)
 
     if !link
       say_to_player(person, "No such exit")
     else
-      dir = link.directions[0]
-      say_to_room person, "#{person.one(Name).value} went #{dir}."
-      say_to_player person, "You go #{dir}"
-      new_room = manager[link.destination]
-      person.one(ContainedBy).uuid = new_room.uuid
-      new_room.add Containee.new(person.uuid)
-      # FIXME: find then delete since an object should only exist in one place
-      Containee.for(room).each { |l| l.delete if l.uuid == person.uuid }
+      direction_label = link.one(Name).value
+      say_to_room person, "#{person.one(Name).value} went #{direction_label}."
+      say_to_player person, "You go #{direction_label}"
+      exit_ref = link.one(LinkRef)
 
+      if !exit_ref
+        # FIXME: Add unlink fail/ofail stuff.
+      else
+        new_room = manager[exit_ref.value] # FIXME: Error handling for this
+        person.one(ContainedBy).value = new_room.uuid
+        new_room.add Containee.new(person.uuid)
+        # FIXME: find then delete since an object should only exist in one place
+        Containee.for(room).each { |l| l.delete if l.value == person.uuid }
+      end
       @look_command.execute(cmd)
     end
   end
