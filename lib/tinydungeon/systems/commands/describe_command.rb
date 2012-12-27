@@ -1,7 +1,5 @@
 require 'tinydungeon/systems/commands/command'
 
-require 'tinydungeon/components/description'
-
 class DescribeCommand < Command
   def execute(cmd)
     name, description = rest(cmd.line).split(/\s*=\s*/, 2)

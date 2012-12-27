@@ -1,13 +1,11 @@
-require 'tinydungeon/components/contained_by'
-require 'tinydungeon/components/containee'
-require 'tinydungeon/components/container'
+require 'tinydungeon/game_components'
 
 module ContainerHelper
   ##
   # Add an entity to a container entity
   def add_to_container(container, entity)
     unless container.is? Container
-      raise "Not a container #{manager.entity_as_string(container)}" 
+      raise "Not a container #{manager.entity_as_string(container)}"
     end
 
     entity.has ContainedBy.new(container.uuid)

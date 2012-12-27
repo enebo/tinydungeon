@@ -1,9 +1,9 @@
 require 'tinydungeon/systems/commands/command'
 
-require 'tinydungeon/components/contained_by'
-require 'tinydungeon/components/containee'
 require 'tinydungeon/components/link'
 require 'tinydungeon/components/name'
+
+require 'tinydungeon/systems/helpers/container_helper'
 
 class GotoCommand < Command
   def initialize(system, look_command)

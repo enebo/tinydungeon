@@ -1,12 +1,6 @@
 require 'wreckem/system'
 
-require 'tinydungeon/components/command_line'
-require 'tinydungeon/components/contained_by'
-require 'tinydungeon/components/containee'
-require 'tinydungeon/components/echo'
-require 'tinydungeon/components/message'
-require 'tinydungeon/components/npc'
-require 'tinydungeon/components/player'
+require 'tinydungeon/game_components'
 
 class HearThingsSystem < Wreckem::System
   def initialize(game, commands)

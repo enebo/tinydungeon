@@ -2,13 +2,7 @@ require 'wreckem'
 require 'wreckem/game'
 require 'wreckem/entity_manager'
 
-require 'tinydungeon/components/description'
-require 'tinydungeon/components/entry'
-require 'tinydungeon/components/last_contained_by'
-require 'tinydungeon/components/name'
-require 'tinydungeon/components/namedb'
-require 'tinydungeon/components/npc'
-require 'tinydungeon/components/player'
+require 'tinydungeon/game_components'
 
 require 'tinydungeon/systems/helpers/container_helper'
 

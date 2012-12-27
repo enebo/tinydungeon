@@ -1,7 +1,6 @@
 require 'wreckem/system'
 
-require 'tinydungeon/components/command_line'
-require 'tinydungeon/components/namedb'
+require 'tinydungeon/game_components'
 
 require 'tinydungeon/systems/commands/describe_command'
 require 'tinydungeon/systems/commands/dig_command'

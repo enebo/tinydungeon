@@ -1,9 +1,7 @@
 require 'socket'
 require 'wreckem/system'
 
-require 'tinydungeon/components/command_line'
-require 'tinydungeon/components/player'
-
+require 'tinydungeon/game_components'
 require 'tinydungeon/systems/helpers/container_helper'
 
 class AcquireCommandsSystem < Wreckem::System

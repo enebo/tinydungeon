@@ -1,8 +1,5 @@
 require 'tinydungeon/systems/commands/command'
 
-require 'tinydungeon/components/container'
-require 'tinydungeon/components/link'
-
 class OpenCommand < Command
   def execute(cmd)
     line = rest(cmd.line)
