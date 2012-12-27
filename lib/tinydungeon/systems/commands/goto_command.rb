@@ -1,22 +1,17 @@
-require 'tinydungeon/systems/commands/command'
-
 require 'tinydungeon/game_components'
 
-require 'tinydungeon/systems/helpers/container_helper'
-require 'tinydungeon/systems/helpers/link_helper'
+require 'tinydungeon/systems/commands/command'
 
 class GotoCommand < Command
-  include ContainerHelper, LinkHelper
-
   def initialize(system, look_command)
     super(system)
     @look_command = look_command
   end
 
   def execute(cmd)
-    direction = rest(cmd.line)
+    direction = rest(cmd)
     person = cmd.entity
-    room = room_for(person)
+    room = container_for(person)
     link = link_for(room, direction)
 
     if !link
@@ -31,10 +26,7 @@ class GotoCommand < Command
         # FIXME: Add unlink fail/ofail stuff.
       else
         new_room = manager[exit_ref.value] # FIXME: Error handling for this
-        person.one(ContainedBy).value = new_room.uuid
-        new_room.add Containee.new(person.uuid)
-        # FIXME: find then delete since an object should only exist in one place
-        Containee.for(room).each { |l| l.delete if l.value == person.uuid }
+        swap_containers(room, new_room, person)
       end
       @look_command.execute(cmd)
     end

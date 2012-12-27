@@ -6,7 +6,7 @@ class HelpCommand < Command
   end
 
   def execute(cmd)
-    command_name = rest(cmd.line)
+    command_name = rest(cmd)
     if command_name
       command = @commands[command_name.strip]
       if !command

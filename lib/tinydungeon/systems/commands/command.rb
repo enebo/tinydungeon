@@ -1,6 +1,9 @@
 require 'tinydungeon/game_components'
+require 'tinydungeon/systems/helpers/container_helper'
+require 'tinydungeon/systems/helpers/link_helper'
 
 class Command
+  include ContainerHelper, LinkHelper
   attr_reader :system
 
   def initialize(system)
@@ -45,7 +48,7 @@ EOS
   end
 
   def say_to_player(sender, msg)
-    sender.add Message.new(sender.one(ContainedBy).value, msg)
+    sender.add Message.new(container_for(sender).uuid, msg)
   end
 
   # Let the room and all items in the room hear what you said (except you)
@@ -63,7 +66,7 @@ EOS
 
   def name_to_object_info(issuer, name)
     if name == "here"
-      entity = manager[issuer.one(ContainedBy).value]
+      entity = container_for(issuer)
       name = entity.one(Name)
       num = namedb.name_map[name]
     elsif name == "me"
@@ -81,11 +84,7 @@ EOS
     [name, num, entity]
   end
 
-  def room_for(entity)
-    manager[entity.one(ContainedBy).value]
-  end
-
-  def rest(line)
-    line.split(/\s+/, 2)[1]
+  def rest(cmd)
+    cmd.value.split(/\s+/, 2)[1]
   end
 end

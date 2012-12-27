@@ -7,5 +7,9 @@ class Message < Wreckem::Component
     super()
     @location, @line = location, line
   end
+
+  def value
+    @line
+  end
 end
 

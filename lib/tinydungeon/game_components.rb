@@ -1,7 +1,7 @@
 require 'wreckem/component'
 
 ContainedBy = Wreckem::Component::define(:entity)
-CommandLine = Wreckem::Component.defined(:string)
+CommandLine = Wreckem::Component.define(:string)
 Containee = Wreckem::Component::define(:entity)
 Description = Wreckem::Component.define(:string)
 Echo = Wreckem::Component.define
@@ -14,6 +14,7 @@ Name = Wreckem::Component.define(:string)
 NameAlias = Wreckem::Component.define(:string)
 NPC = Wreckem::Component.define
 Player = Wreckem::Component.define
+SayMessage = Wreckem::Component.define(:string)
 
 require 'tinydungeon/components/message'
 require 'tinydungeon/components/namedb'

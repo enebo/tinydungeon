@@ -2,11 +2,11 @@ require 'tinydungeon/systems/commands/command'
 
 class DescribeCommand < Command
   def execute(cmd)
-    name, description = rest(cmd.line).split(/\s*=\s*/, 2)
+    name, description = rest(cmd).split(/\s*=\s*/, 2)
     name, num, entity = name_to_object_info(cmd.entity, name)
       
     if entity
-      if cmd.line !~ %r{=(.*)}
+      if cmd.value !~ %r{=(.*)}
         say_to_player cmd.entity, "#{name.value}(\##{num}) = #{entity.one(Description).value}"
       else
         entity.one(Description).value = description if entity

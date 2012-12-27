@@ -2,7 +2,7 @@ require 'tinydungeon/systems/commands/command'
 
 class OpenCommand < Command
   def execute(cmd)
-    line = rest(cmd.line)
+    line = rest(cmd)
     directions, num = line.split('=')
     directions = directions.split(';')
 
@@ -12,10 +12,10 @@ class OpenCommand < Command
       return
     end
 
-    destination_room = manager[destination_uuid]
-    if destination_room.is? Container
-      source_room = room_for(cmd.entity)
-      link = game.create_link(source_room, destination_room, directions)
+    destination = manager[destination_uuid]
+    if container?(destination)
+      source_room = container_for(cmd.entity)
+      link = game.create_link(source_room, destination, directions)
     else 
       say_to_player cmd.entity, "You cannot open into a non-room"
       return

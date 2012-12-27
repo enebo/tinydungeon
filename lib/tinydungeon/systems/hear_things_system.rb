@@ -1,10 +1,11 @@
 require 'wreckem/system'
 
 require 'tinydungeon/game_components'
+require 'tinydungeon/systems/helpers/container_helper'
 require 'tinydungeon/systems/helpers/link_helper'
 
 class HearThingsSystem < Wreckem::System
-  include LinkHelper
+  include ContainerHelper, LinkHelper
 
   def initialize(game, commands)
     super(game)
@@ -18,15 +19,15 @@ class HearThingsSystem < Wreckem::System
       where = manager[message.location]
 
       if receiver.is?(Player)
-        room = manager[receiver.one(ContainedBy).value]
-        game.connections[receiver].puts message.line if room == where
+        room = container_for(receiver)
+        game.connections[receiver].puts message.value if room == where
       end
 
       if receiver.is?(NPC)
-        room = manager[receiver.one(ContainedBy).value]
+        room = container_for(receiver)
 
-        if room == where && link_for(room, message.line)
-          CommandLine.new("goto #{message.line}").tap do |cl|
+        if room == where && link_for(room, message.value)
+          CommandLine.new("goto #{message.value}").tap do |cl|
             receiver.add cl
             @commands['goto'].execute(cl)
             receiver.delete cl
@@ -35,7 +36,7 @@ class HearThingsSystem < Wreckem::System
         end
       end
       if receiver.has?(Echo)
-        echo_string = "You hear an echo, \"#{message.line}\""
+        echo_string = "You hear an echo, \"#{message.value}\""
         Containee.for(receiver) do |l|
           new_messages << [manager[l.value], Message.new(receiver, echo_string)]
         end

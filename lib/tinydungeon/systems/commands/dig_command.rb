@@ -2,7 +2,7 @@ require 'tinydungeon/systems/commands/command'
 
 class DigCommand < Command
   def execute(cmd)
-    name = rest(cmd.line)
+    name = rest(cmd)
     room = game.create_room(name, '')
     name, num, entity = name_to_object_info(cmd.entity, name)
     say_to_player cmd.entity, "Created a room named: #{name} (\##{num})"
