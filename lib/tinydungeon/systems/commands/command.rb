@@ -65,7 +65,11 @@ EOS
 
   def name_to_object_info(issuer, name)
     if name == "here"
-      entity = manager[issue.one(ContainedBy).uuid]
+      entity = manager[issuer.one(ContainedBy).uuid]
+      name = entity.one(Name)
+      num = namedb.name_map[name]
+    elsif name == "me"
+      entity = issuer
       name = entity.one(Name)
       num = namedb.name_map[name]
     elsif name =~ /^\d+$/

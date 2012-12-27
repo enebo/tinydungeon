@@ -22,7 +22,7 @@ class HearThingsSystem < Wreckem::System
 
       if receiver.is?(Player)
         room = manager[receiver.one(ContainedBy).uuid]
-        puts message.line if room == where
+        game.connections[receiver].puts message.line if room == where
       end
 
       if receiver.is?(NPC)

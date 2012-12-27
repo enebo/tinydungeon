@@ -2,46 +2,68 @@ require 'wreckem'
 require 'wreckem/game'
 require 'wreckem/entity_manager'
 
-require 'tinydungeon/components/contained_by'
-require 'tinydungeon/components/containee'
-require 'tinydungeon/components/container'
 require 'tinydungeon/components/description'
+require 'tinydungeon/components/entry'
+require 'tinydungeon/components/last_contained_by'
 require 'tinydungeon/components/name'
 require 'tinydungeon/components/namedb'
 require 'tinydungeon/components/npc'
 require 'tinydungeon/components/player'
+
+require 'tinydungeon/systems/helpers/container_helper'
 
 require 'tinydungeon/systems/acquire_commands_system'
 require 'tinydungeon/systems/process_commands_system'
 require 'tinydungeon/systems/hear_things_system'
 
 class TinyDungeon < Wreckem::Game
+  attr_reader :connections, :players, :entry
+  include ContainerHelper
+
+  def initialize
+    super()
+
+    # We keep these mappings out of our EC system since they are transient
+    # and full socket objects
+    @connections = {}
+    @players = {}
+  end
+
   def register_entities
-    return if manager.size > 0 # Already loaded..hacky
+    if manager.size > 0 # Already loaded..hacky
+      @entry = Entry.add[0].entity
+      return 
+    end
+
     manager.create_entity { |e| e.has NameDB.new }
 
-    room = create_room("Echo Chamber", "A round domed room")
-    room.is Echo
+    @entry = create_room("Echo Chamber", "A round domed room").tap do |room|
+      room.is Entry, Echo
+    end
 
-    player = create_object('Vorne', 'A dashing adventurer')
-    player.is Player
-    player.has ContainedBy.new(room.uuid)
-    room.add Containee.new(player.uuid)
+    create_object('Goblozowie', "a green, nasty looking goblin").tap do |goblin|
+      goblin.is NPC
+      add_to_container(@entry, goblin)
+    end
+  end
 
-    goblin = create_object('Goblozowie', "a green, nasty looking goblin")
-    goblin.is NPC
-    goblin.has ContainedBy.new(room.uuid)
-    room.add Containee.new(goblin.uuid)
+  def register_async_systems
+    async_systems << AcquireCommandsSystem.new(self)
   end
 
   def register_systems
-    systems << AcquireCommandsSystem.new(self)
     process_commands_system = ProcessCommandsSystem.new(self)
     systems << process_commands_system
     systems << HearThingsSystem.new(self, process_commands_system.commands)
   end
 
   # Creators/Templates
+  def create_player(name=nil, description=nil, room=entry)
+    create_object(name, description).tap do |player|
+      player.is Player
+      add_to_container(room, player)
+    end
+  end
 
   def create_object(name, description)
     obj_name = Name.new(name)
