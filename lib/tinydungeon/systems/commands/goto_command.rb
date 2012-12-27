@@ -15,11 +15,11 @@ class GotoCommand < Command
     link = link_for(room, direction)
 
     if !link
-      say_to_player(person, "No such exit")
+      output_you person, "No such exit"
     else
       direction_label = link.one(Name)
-      say_to_room person, "#{person.one(Name)} went #{direction_label}."
-      say_to_player person, "You go #{direction_label}"
+      output_others person, "#{person.one(Name)} went #{direction_label}."
+      output_you person, "You go #{direction_label}"
       exit_ref = link.one(LinkRef)
 
       if !exit_ref

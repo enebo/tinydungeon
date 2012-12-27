@@ -75,12 +75,15 @@ class TinyDungeon < Wreckem::Game
     namedb.next_number += 1
     namedb.num_map[number] = obj.uuid
 
+    obj.has Num.new(number)
+
     obj
   end
 
   def create_room(name, description)
-    create_object(name, description).tap do |room|
+    room = create_object(name, description).tap do |room|
       room.is Container
+      room.has ContainedBy.new(room.uuid) # FIXME: say from room to others hack
     end
   end
 end

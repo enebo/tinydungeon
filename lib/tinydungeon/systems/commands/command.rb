@@ -1,9 +1,10 @@
 require 'tinydungeon/game_components'
 require 'tinydungeon/systems/helpers/container_helper'
 require 'tinydungeon/systems/helpers/link_helper'
+require 'tinydungeon/systems/helpers/message_helper'
 
 class Command
-  include ContainerHelper, LinkHelper
+  include ContainerHelper, LinkHelper, MessageHelper
   attr_reader :system
 
   def initialize(system)
@@ -45,23 +46,6 @@ EOS
 
   def namedb
     system.namedb
-  end
-
-  def say_to_player(sender, msg)
-    sender.add Message.new(container_for(sender).uuid, msg)
-  end
-
-  # Let the room and all items in the room hear what you said (except you)
-  def say_to_room(sender, msg)
-    room_uuid = sender.one(ContainedBy).value
-    room = manager[room_uuid]
-
-    room.add Message.new(room_uuid, msg)
-
-    Containee.for(room).each do |l|
-      entity = manager[l]
-      entity.add Message.new(room_uuid, msg) if entity != sender
-    end
   end
 
   def name_to_object_info(issuer, name)

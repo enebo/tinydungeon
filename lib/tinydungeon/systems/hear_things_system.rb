@@ -5,7 +5,7 @@ require 'tinydungeon/systems/helpers/container_helper'
 require 'tinydungeon/systems/helpers/link_helper'
 
 class HearThingsSystem < Wreckem::System
-  include ContainerHelper, LinkHelper
+  include ContainerHelper, LinkHelper, MessageHelper
 
   def initialize(game, commands)
     super(game)
@@ -14,41 +14,48 @@ class HearThingsSystem < Wreckem::System
 
   def process
     new_messages = []
-    Message.all do |message|
-      receiver = message.entity
-      where = manager[message.location]
+
+    MessageRef.all do |message_ref|
+      receiver = message_ref.entity
+      message = manager[message_ref]
 
       if receiver.is?(Player)
-        room = container_for(receiver)
-        game.connections[receiver].puts message.value if room == where
-      end
+        msg = message.one(OutputMessage)
+        if !msg
+          msg = message.one(SayMessage)
+          if msg
+            sender = manager[message.one(Sender)]
+            msg = sender == receiver ? 
+              "You say, '#{msg}'." : "#{sender.one(Name)} says, '#{msg}'."
+          end
+        end
 
+        game.connections[receiver].puts msg if msg
+      end
+      
       if receiver.is?(NPC)
         room = container_for(receiver)
 
-        if room == where && link_for(room, message.value)
-          CommandLine.new("goto #{message.value}").tap do |cl|
-            receiver.add cl
-            @commands['goto'].execute(cl)
-            receiver.delete cl
+        msg = message.one(SayMessage)
+        if msg
+          link = link_for(room, msg.value)
+          if link
+            CommandLine.new("goto #{link.one(Name)}").tap do |cl|
+              receiver.add cl
+              @commands['goto'].execute(cl)
+              receiver.delete cl
+            end
+            process
           end
-          process
         end
       end
-      if receiver.has?(Echo)
-        echo_string = "You hear an echo, \"#{message.value}\""
-        Containee.for(receiver) do |l|
-          new_messages << [manager[l], Message.new(receiver, echo_string)]
-        end
-      end
-      receiver.delete message
-    end
 
-    unless new_messages.empty?
-      new_messages.each do |entity, message|
-        entity.add message
+      if receiver.has?(Echo) && msg = message.one(SayMessage)
+        output_others(receiver, "You hear an echo, \"#{msg}\"")
       end
-      process
+
+      receiver.delete message_ref
+      message.delete
     end
   end
 end

@@ -3,7 +3,8 @@ require 'tinydungeon/systems/commands/command'
 class SaveCommand < Command
   def execute(cmd)
     manager.save
-    say_to_player cmd.entity, "World Saved."
+    output_you cmd.entity, "World Saved."
+    output_others cmd.entity, "#{cmd.entity.one(Name)} saved world."
   end
 
   def description

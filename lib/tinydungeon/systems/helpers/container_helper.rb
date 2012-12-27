@@ -20,6 +20,11 @@ module ContainerHelper
     entity.is? Container
   end
 
+  def each_container_entity(container)
+    must_be_container(container)
+    Containee.for(container).each { |l| yield manager[l] }
+  end
+
   def container_for(entity)
     manager[entity.one(ContainedBy)]
   end

@@ -2,6 +2,7 @@ require 'tinydungeon/systems/commands/command'
 
 class HelpCommand < Command
   def initialize(system, commands)
+    super(system)
     @commands = commands
   end
 
@@ -10,16 +11,16 @@ class HelpCommand < Command
     if command_name
       command = @commands[command_name.strip]
       if !command
-        say_to_player cmd.entity, "No such command for help: #{command_name.strip}"
+        output_you cmd.entity, "No such command for help: #{command_name.strip}"
       else
-        say_to_player cmd.entity, command.help
+        output_you cmd.entity, command.help
       end
     else
-      help = @commands.sort.inject do |s, (k, v)|
+      help = @commands.sort.inject('') do |s, (k, v)|
         s << "#{v.usage}\n"
         s << "    #{v.description}\n"
       end
-      say_to_player cmd.entity, help
+      output_you cmd.entity, help
     end
   end
 

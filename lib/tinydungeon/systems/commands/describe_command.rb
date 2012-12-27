@@ -7,13 +7,13 @@ class DescribeCommand < Command
       
     if entity
       if cmd.value !~ %r{=(.*)}
-        say_to_player cmd.entity, "#{name}(\##{num}) = #{entity.one(Description)}"
+        output_you cmd.entity, "#{name}(\##{num}) = #{entity.one(Description)}"
       else
         entity.one(Description).value = description if entity
-        say_to_player cmd.entity, "#{name}(\##{num}) changed to #{description}."
+        output_you cmd.entity, "#{name}(\##{num}) changed to #{description}."
       end
     else
-      say_to_player cmd.entity, "No such object named: #{name}"
+      output_you cmd.entity, "No such object named: #{name}"
     end
   end
 
