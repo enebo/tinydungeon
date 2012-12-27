@@ -28,7 +28,7 @@ module LinkHelper
   def link_names(room)
     list = []
     LinkRef.for(room) do |linkref|
-      list << manager[linkref].one(Name).value
+      list << manager[linkref].one(Name).to_s
     end
     list
   end

@@ -8,7 +8,7 @@ class LookCommand < Command
 
   def execute(cmd)
     player = cmd.entity
-    room = manager[player.one(ContainedBy).value]
+    room = manager[player.one(ContainedBy)]
     message = <<-EOS
 #{room.one(Name)} - #{room.one(Description)}
 
@@ -17,7 +17,7 @@ Things here:
 
     Containee.for(room) do |l|
       e = manager[l]
-      you = e == player ?'[you]':''
+      you = e == player ? '[you]' : ''
       message << "   #{e.one(Name)} - #{e.one(Description)} #{you}\n"
     end
 
