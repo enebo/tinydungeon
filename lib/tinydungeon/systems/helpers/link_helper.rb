@@ -14,7 +14,7 @@ module LinkHelper
 
   def link_for(room, direction)
     LinkRef.for(room) do |linkref|
-      link = manager[linkref.value]  # FIXME: How to deal with bad data?
+      link = manager[linkref]  # FIXME: How to deal with bad data?
 
       return link if link.one(Name).value == direction
       
@@ -28,7 +28,7 @@ module LinkHelper
   def link_names(room)
     list = []
     LinkRef.for(room) do |linkref|
-      list << manager[linkref.value].one(Name).value
+      list << manager[linkref].one(Name).value
     end
     list
   end

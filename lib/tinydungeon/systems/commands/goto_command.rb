@@ -17,15 +17,15 @@ class GotoCommand < Command
     if !link
       say_to_player(person, "No such exit")
     else
-      direction_label = link.one(Name).value
-      say_to_room person, "#{person.one(Name).value} went #{direction_label}."
+      direction_label = link.one(Name)
+      say_to_room person, "#{person.one(Name)} went #{direction_label}."
       say_to_player person, "You go #{direction_label}"
       exit_ref = link.one(LinkRef)
 
       if !exit_ref
         # FIXME: Add unlink fail/ofail stuff.
       else
-        new_room = manager[exit_ref.value] # FIXME: Error handling for this
+        new_room = manager[exit_ref] # FIXME: Error handling for this
         swap_containers(room, new_room, person)
       end
       @look_command.execute(cmd)

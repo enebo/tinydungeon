@@ -68,19 +68,19 @@ class AcquireCommandsSystem < Wreckem::System
       else
         # FIXME: On crash lastcontained by may not exist and use contained by
         last_room = player.one(LastContainedBy)
-        room = manager[last_room.value]
+        room = manager[last_room]
         if last_room and room
           player.delete last_room
         else
           room = game.entry
         end
-        client.puts "Welcome back #{player.one(Name).value}"
+        client.puts "Welcome back #{player.one(Name)}"
         add_to_container(room, player)
       end
     end
     game.connections[player] = client
     game.players[client] = player
-    client.write("Connected as player #{player.one(Name).value}\n\n ")
+    client.write("Connected as player #{player.one(Name)}\n\n ")
 
     player.add CommandLine.new("look")
   rescue

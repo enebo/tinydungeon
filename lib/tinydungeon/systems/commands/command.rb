@@ -59,7 +59,7 @@ EOS
     room.add Message.new(room_uuid, msg)
 
     Containee.for(room).each do |l|
-      entity = manager[l.value]
+      entity = manager[l]
       entity.add Message.new(room_uuid, msg) if entity != sender
     end
   end

@@ -38,7 +38,7 @@ class HearThingsSystem < Wreckem::System
       if receiver.has?(Echo)
         echo_string = "You hear an echo, \"#{message.value}\""
         Containee.for(receiver) do |l|
-          new_messages << [manager[l.value], Message.new(receiver, echo_string)]
+          new_messages << [manager[l], Message.new(receiver, echo_string)]
         end
       end
       receiver.delete message

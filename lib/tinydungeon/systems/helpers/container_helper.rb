@@ -21,7 +21,7 @@ module ContainerHelper
   end
 
   def container_for(entity)
-    manager[entity.one(ContainedBy).value]
+    manager[entity.one(ContainedBy)]
   end
 
   def must_be_container(entity)

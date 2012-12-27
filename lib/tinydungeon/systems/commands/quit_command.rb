@@ -7,7 +7,7 @@ class QuitCommand < Command
     last_room = player.one(ContainedBy)
     player.add LastContainedBy.new(last_room.value)
     
-    last_room_entity = manager[last_room.value]
+    last_room_entity = manager[last_room]
     Containee.for(last_room_entity) do |c|
       c.delete if c.value == player.uuid
     end

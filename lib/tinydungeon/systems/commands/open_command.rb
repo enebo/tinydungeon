@@ -22,7 +22,7 @@ class OpenCommand < Command
     end
     
     status = !num ? "Created unlinked exit" : 
-      "Created exit to: #{link.one(Name).value}"
+      "Created exit to: #{link.one(Name)}"
     say_to_player cmd.entity, status
   end
 

@@ -9,18 +9,16 @@ class LookCommand < Command
   def execute(cmd)
     player = cmd.entity
     room = manager[player.one(ContainedBy).value]
-    title, desc = room.one(Name), room.one(Description)
-
     message = <<-EOS
-#{title.value} - #{desc.value}
+#{room.one(Name)} - #{room.one(Description)}
 
 Things here:
     EOS
 
     Containee.for(room) do |l|
-      e = manager[l.value]
-      name, desc = e.one(Name), e.one(Description)
-      message << "   #{name.value} - #{desc.value} #{e == player ?'[you]':''}\n"
+      e = manager[l]
+      you = e == player ?'[you]':''
+      message << "   #{e.one(Name)} - #{e.one(Description)} #{you}\n"
     end
 
     links = link_names(room)
