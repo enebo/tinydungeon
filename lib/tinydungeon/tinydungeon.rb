@@ -26,7 +26,7 @@ class TinyDungeon < Wreckem::Game
 
   def register_entities
     if manager.size > 0 # Already loaded..hacky
-      @entry = Entry.one_for.entity
+      @entry = Entry.all[0].entity
       return 
     end
 
