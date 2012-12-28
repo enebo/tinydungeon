@@ -14,6 +14,8 @@ Name = Wreckem::Component.define(:string)
 NameAlias = Wreckem::Component.define(:string)
 NPC = Wreckem::Component.define
 Num = Wreckem::Component.define(:int)
+# An ordinary item (!Room,Player,NPC,{unlinkedobject})
+NormalObject = Wreckem::Component.define
 Player = Wreckem::Component.define
 # A reference to a message
 MessageRef = Wreckem::Component.define(:ref)

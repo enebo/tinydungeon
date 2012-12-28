@@ -4,7 +4,9 @@ require 'tinydungeon/game_components'
 
 require 'tinydungeon/systems/commands/create_command'
 require 'tinydungeon/systems/commands/describe_command'
+require 'tinydungeon/systems/commands/drop_command'
 require 'tinydungeon/systems/commands/dig_command'
+require 'tinydungeon/systems/commands/get_command'
 require 'tinydungeon/systems/commands/goto_command'
 require 'tinydungeon/systems/commands/help_command'
 require 'tinydungeon/systems/commands/inventory_command'
@@ -25,10 +27,12 @@ class ProcessCommandsSystem < Wreckem::System
       '@create' => CreateCommand.new(self),
       '@describe' => DescribeCommand.new(self),
       '@dig' => DigCommand.new(self),
+      'drop' => DropCommand.new(self),
+      'get' => GetCommand.new(self),
       'inventory' => InventoryCommand.new(self),
       'look' => LookCommand.new(self),
       '@open' => OpenCommand.new(self),
-      'QUIT' => QuitCommand.new(self),
+      'quit' => QuitCommand.new(self),
       'save' => SaveCommand.new(self),
       'say' => SayCommand.new(self),
     }
