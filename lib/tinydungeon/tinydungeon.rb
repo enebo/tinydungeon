@@ -57,6 +57,7 @@ class TinyDungeon < Wreckem::Game
     create_object(name, description).tap do |player|
       player.is Player
       add_to_container(room, player)
+      player.is Container
     end
   end
 

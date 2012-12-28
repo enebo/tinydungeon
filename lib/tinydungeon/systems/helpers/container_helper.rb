@@ -11,7 +11,7 @@ module ContainerHelper
 
   def swap_containers(old_container, new_container, entity)
     must_be_container(new_container)
-    Containee.for(old_container).each { |l| l.delete if l.value == entity.uuid }
+    Containee.for(old_container).each { |l| l.delete if l.same? entity.uuid }
     entity.one(ContainedBy).value = new_container.uuid
     new_container.add Containee.new(entity.uuid)
   end

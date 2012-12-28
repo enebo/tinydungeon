@@ -54,7 +54,7 @@ class AcquireCommandsSystem < Wreckem::System
       name = client.gets("\n").chomp
       # FIXME: Whoa...huge search space
       Player.intersects(Name) do |entity, _, entity_name|
-        if name == entity_name.value
+        if entity_name.same?(name)
           player = entity
           break;
         end

@@ -27,6 +27,7 @@ class GotoCommand < Command
       else
         new_room = manager[exit_ref] # FIXME: Error handling for this
         swap_containers(room, new_room, person)
+        output_others person, "#{person.one(Name)} enters the room."
       end
       @look_command.execute(cmd)
     end

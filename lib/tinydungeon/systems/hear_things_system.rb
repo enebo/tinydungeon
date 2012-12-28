@@ -17,6 +17,7 @@ class HearThingsSystem < Wreckem::System
 
     MessageRef.all do |message_ref|
       receiver = message_ref.entity
+      receiver.delete message_ref
       message = manager[message_ref]
 
       if receiver.is?(Player)
@@ -38,7 +39,7 @@ class HearThingsSystem < Wreckem::System
 
         msg = message.one(SayMessage)
         if msg
-          link = link_for(room, msg.value)
+          link = link_for(room, msg)
           if link
             CommandLine.new("goto #{link.one(Name)}").tap do |cl|
               receiver.add cl
@@ -54,7 +55,6 @@ class HearThingsSystem < Wreckem::System
         output_others(receiver, "You hear an echo, \"#{msg}\"")
       end
 
-      receiver.delete message_ref
       message.delete
     end
   end

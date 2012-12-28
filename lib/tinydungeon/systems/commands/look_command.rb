@@ -1,20 +1,17 @@
 require 'tinydungeon/systems/commands/command'
 
 require 'tinydungeon/game_components'
+require 'tinydungeon/systems/helpers/container_helper'
 require 'tinydungeon/systems/helpers/link_helper'
 
 class LookCommand < Command
-  include LinkHelper
-
   def execute(cmd)
     player = cmd.entity
     room = manager[player.one(ContainedBy)]
-    message = "#{label_for(room)}\n\nThings here:\n"
+    message = "\n#{label_for(room)}\n\nThings here:\n"
 
-    Containee.for(room) do |l|
-      e = manager[l]
-      you = e == player ? '[you]' : ''
-      message << "   #{label_for(e)} #{you}\n"
+    each_container_entity(room) do |e|
+      message << "   #{label_for(e)} #{e == player ? '[you]' : ''}\n"
     end
     message << "\n"
 
