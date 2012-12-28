@@ -1,8 +1,6 @@
 require 'tinydungeon/systems/commands/command'
 
 require 'tinydungeon/game_components'
-require 'tinydungeon/systems/helpers/container_helper'
-require 'tinydungeon/systems/helpers/link_helper'
 
 class LookCommand < Command
   def execute(cmd)

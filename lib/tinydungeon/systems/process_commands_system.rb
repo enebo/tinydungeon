@@ -15,6 +15,7 @@ require 'tinydungeon/systems/commands/open_command'
 require 'tinydungeon/systems/commands/quit_command'
 require 'tinydungeon/systems/commands/save_command'
 require 'tinydungeon/systems/commands/say_command'
+require 'tinydungeon/systems/commands/who_command'
 
 class ProcessCommandsSystem < Wreckem::System
   attr_reader :namedb, :commands
@@ -35,6 +36,7 @@ class ProcessCommandsSystem < Wreckem::System
       'quit' => QuitCommand.new(self),
       'save' => SaveCommand.new(self),
       'say' => SayCommand.new(self),
+      'who' => WhoCommand.new(self),
     }
     @commands['goto'] = GotoCommand.new(self, @commands['look'])
     @commands['help'] = HelpCommand.new(self, @commands)
