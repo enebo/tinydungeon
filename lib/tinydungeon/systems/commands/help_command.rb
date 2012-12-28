@@ -16,11 +16,10 @@ class HelpCommand < Command
         output_you cmd.entity, command.help
       end
     else
-      help = @commands.sort.inject('') do |s, (k, v)|
-        s << "#{v.usage}\n"
-        s << "    #{v.description}\n"
-      end
-      output_you cmd.entity, help
+      commands = @commands.keys.sort.inject([]) {|s,e| s << e; s }
+      message = "Commands: #{commands.join(', ')}\n\n"
+      message += "Type 'help {command_name}' for detailed help."
+      output_you cmd.entity, message
     end
   end
 

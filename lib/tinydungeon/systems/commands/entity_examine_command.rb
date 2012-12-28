@@ -1,29 +1,23 @@
 require 'tinydungeon/systems/commands/command'
 
-class DescribeCommand < Command
+class EntityExamineCommand < Command
   def execute(cmd)
     name, description = rest(cmd).split(/\s*=\s*/, 2)
     name, num, entity = name_to_object_info(cmd.entity, name)
       
     if entity
-      if cmd.value !~ %r{=(.*)}
-        entity.one(Description).value = ''
-        output_you cmd.entity, "#{name}(\##{num}) description reset."
-      else
-        entity.one(Description).value = description if entity
-        output_you cmd.entity, "#{name}(\##{num}) changed to #{description}."
-      end
+      output_you cmd.entity, manager.entity_as_string(entity)
     else
       output_you cmd.entity, "No such object named: #{name}"
     end
   end
 
   def description
-    "See or set description of an object"
+    "See underlying entity values for object"
   end
 
   def usage
-    "@describe [{object}][={description}]"
+    "@entity_examine [{object}]"
   end
 
   def help
@@ -33,8 +27,7 @@ class DescribeCommand < Command
 ={description} then it just displays the current description.
 
 Examples
-@describe me=Quite a fella
-@describe me  # resets description
+@entity_examine me
 
 EOS
   end
