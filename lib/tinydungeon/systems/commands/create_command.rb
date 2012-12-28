@@ -3,7 +3,7 @@ require 'tinydungeon/systems/commands/command'
 class CreateCommand < Command
   def execute(cmd)
     name = rest(cmd)
-    obj = game.create_object(name, '').tap do |o|
+    obj = game.create_object(name, '', cmd.entity).tap do |o|
       o.is NormalObject
     end
     name, num, entity = name_to_object_info(cmd.entity, name)

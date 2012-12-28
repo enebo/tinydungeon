@@ -36,7 +36,10 @@ class TinyDungeon < Wreckem::Game
       room.is Entry, Echo
     end
 
-    create_object('Goblozowie', "a green, nasty looking goblin").tap do |goblin|
+    @admin = create_player("Neo", "The one", nil)
+    @entry.has Owner.new(@admin) # bootstrapping...who came first
+
+    create_object('Goblozowie', "A green goblin", @admin).tap do |goblin|
       goblin.is NPC
       add_to_container(@entry, goblin)
     end
@@ -54,18 +57,19 @@ class TinyDungeon < Wreckem::Game
 
   # Creators/Templates
   def create_player(name=nil, description=nil, room=entry)
-    create_object(name, description).tap do |player|
+    create_object(name, description, @admin).tap do |player|
       player.is Player
-      add_to_container(room, player)
+      add_to_container(room, player) if room
       player.is Container
     end
   end
 
-  def create_object(name, description)
+  def create_object(name, description, owner=nil)
     obj_name = Name.new(name)
     obj = manager.create_entity do |e|
       e.has obj_name
       e.has Description.new(description)
+      e.has Owner.new(owner) if owner
     end
 
     # FIXME: This will never work across threads (ok?)
@@ -81,8 +85,8 @@ class TinyDungeon < Wreckem::Game
     obj
   end
 
-  def create_room(name, description)
-    room = create_object(name, description).tap do |room|
+  def create_room(name, description, owner=nil)
+    room = create_object(name, description, owner=nil).tap do |room|
       room.is Container
       room.has ContainedBy.new(room.uuid) # FIXME: say from room to others hack
     end

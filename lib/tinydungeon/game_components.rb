@@ -12,6 +12,7 @@ Link = Wreckem::Component.define
 LinkRef = Wreckem::Component.define(:ref)
 Name = Wreckem::Component.define(:string)
 NameAlias = Wreckem::Component.define(:string)
+Owner = Wreckem::Component.define(:ref)
 NPC = Wreckem::Component.define
 Num = Wreckem::Component.define(:int)
 # An ordinary item (!Room,Player,NPC,{unlinkedobject})

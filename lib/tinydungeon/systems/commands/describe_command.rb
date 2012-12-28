@@ -7,7 +7,10 @@ class DescribeCommand < Command
       
     if entity
       if cmd.value !~ %r{=(.*)}
-        output_you cmd.entity, "#{name}(\##{num}) = #{entity.one(Description)}"
+        owner = manager[entity.one(Owner)]
+        description = entity.one(Description)
+        message = "#{name}(\##{num}) [#{owner.one(Name)}] - #{description}\n"
+        output_you cmd.entity, message
       else
         entity.one(Description).value = description if entity
         output_you cmd.entity, "#{name}(\##{num}) changed to #{description}."
