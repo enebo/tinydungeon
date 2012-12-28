@@ -4,7 +4,7 @@ class DescribeCommand < Command
   def execute(cmd)
     rest = rest(cmd)
     unless rest
-      output_you "Must supply a name: #{usage}"
+      output_you cmd.entity, "Must supply a name: #{usage}"
       return
     end
 
