@@ -2,7 +2,14 @@ require 'tinydungeon/systems/commands/command'
 
 class DescribeCommand < Command
   def execute(cmd)
-    name, description = rest(cmd).split(/\s*=\s*/, 2)
+    rest = rest(cmd)
+    unless rest
+      output_you "Must supply a name: #{usage}"
+      return
+    end
+
+    name, description = rest.split(/\s*=\s*/, 2) 
+
     name, num, entity = name_to_object_info(cmd.entity, name)
       
     if entity
