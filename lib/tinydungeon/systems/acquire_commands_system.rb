@@ -82,7 +82,7 @@ class AcquireCommandsSystem < Wreckem::System
     game.players[client] = player
     client.write("Connected as player #{player.one(Name)}\n\n ")
 
-    player.add CommandLine.new("look")
+    player.add CommandLine.new("/look")
   rescue
     puts "Whoops #{$!} #{caller.inspect}"
   end

@@ -41,9 +41,9 @@ class HearThingsSystem < Wreckem::System
         if msg
           link = link_for(room, msg)
           if link
-            CommandLine.new("goto #{link.one(Name)}").tap do |cl|
+            CommandLine.new("/goto #{link.one(Name)}").tap do |cl|
               receiver.add cl
-              @commands['goto'].execute(cl)
+              @commands['/goto'].execute(cl)
               receiver.delete cl
             end
             process

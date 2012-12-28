@@ -11,7 +11,7 @@ module ContainerHelper
 
   def swap_containers(old_container, new_container, entity)
     must_be_container(new_container)
-    Containee.for(old_container).each { |l| l.delete if l.same? entity.uuid }
+    old_container.many(Containee).each { |l| l.delete if l.same? entity.uuid }
     entity.one(ContainedBy).value = new_container.uuid
     new_container.add Containee.new(entity.uuid)
   end
@@ -22,7 +22,7 @@ module ContainerHelper
 
   def each_container_entity(container)
     must_be_container(container)
-    Containee.for(container).each { |l| yield manager[l] }
+    container.many(Containee).each { |l| yield manager[l] }
   end
 
   def container_for(entity)

@@ -13,23 +13,18 @@ module LinkHelper
   end
 
   def link_for(room, direction)
-    LinkRef.for(room) do |linkref|
-      link = manager[linkref]  # FIXME: How to deal with bad data?
+    room.many(LinkRef).each do |linkref|
+      link = manager[linkref]
 
-      return link if link.one(Name).same? direction
-      
-      NameAlias.for(link) do |name_alias|
-        return link if name_alias.same? direction
-      end
+      return link if link.one(Name).same? direction ||
+        link.many(NameAlias).find { |nalias| nalias.same? direction }
     end
     nil
   end
 
   def link_names(room)
-    list = []
-    LinkRef.for(room) do |linkref|
+    room.many(LinkRef).inject([]) do |list, linkref|
       list << manager[linkref].one(Name).to_s
     end
-    list
   end
 end
