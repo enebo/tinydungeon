@@ -20,7 +20,7 @@ class ExamineCommand < Command
   end
 
   def usage
-    "@examine [{object}]"
+    "/examine [{object}]"
   end
 
   def help
@@ -30,7 +30,7 @@ class ExamineCommand < Command
 ={description} then it just displays the current description.
 
 Examples
-@examine me
+/examine me
 
 EOS
   end

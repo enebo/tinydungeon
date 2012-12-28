@@ -16,7 +16,7 @@ class CreateCommand < Command
   end
 
   def usage
-    "@create {name}"
+    "/create {name}"
   end
 
   def help
@@ -26,9 +26,9 @@ class CreateCommand < Command
 as a string in the system.
 
 Examples
-@create Pencil
+/create Pencil
 
-See Also: @describe
+See Also: /describe
 EOS
   end
 end

@@ -18,7 +18,7 @@ class HelpCommand < Command
     else
       commands = @commands.keys.sort.inject([]) {|s,e| s << e; s }
       message = "Commands: #{commands.join(', ')}\n\n"
-      message += "Type 'help {command_name}' for detailed help."
+      message += "Type '/help {command_name}' for detailed help."
       output_you cmd.entity, message
     end
   end
@@ -28,7 +28,7 @@ class HelpCommand < Command
   end
 
   def usage
-    "help [{command_name}]?"
+    "/help [{command_name}]?"
   end
 
   def help
@@ -37,8 +37,8 @@ class HelpCommand < Command
 You can get a generic list of all commands or specific help on a command.
 
 Examples
-@help            # all help
-@help @describe  # detailed help on describe
+/help            # all help
+/help /describe  # detailed help on describe
 
 EOS
   end

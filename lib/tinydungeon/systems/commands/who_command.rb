@@ -32,7 +32,7 @@ class WhoCommand < Command
   end
 
   def usage
-    "who [player]"
+    "/who [player]"
   end
 
   def help

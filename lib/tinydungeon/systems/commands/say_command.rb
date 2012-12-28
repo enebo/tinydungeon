@@ -6,10 +6,10 @@ class SayCommand < Command
   end
 
   def description
-    "say something to the room"
+    "/say something to the room"
   end
 
   def usage
-    "say {message} OR {message}"
+    "/say {message} OR {message}"
   end
 end

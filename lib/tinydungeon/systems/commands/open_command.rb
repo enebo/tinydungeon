@@ -31,7 +31,7 @@ class OpenCommand < Command
   end
 
   def usage
-    "@open [{dir}][;{other dir}]*[=number]"
+    "/open [{dir}][;{other dir}]*[=number]"
   end
 
   def help
@@ -44,8 +44,8 @@ through then you will see the same fail behavior.  If you can travel through
 then you will see osuccess and others will see success.
 
 Examples
-@open north;n;no=3 # open an exit to room #3
-@open south        # open an exit which is unlinked
+/open north;n;no=3 # open an exit to room #3
+/open south        # open an exit which is unlinked
 
 EOS
   end

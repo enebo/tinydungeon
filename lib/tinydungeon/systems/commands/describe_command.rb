@@ -30,7 +30,7 @@ class DescribeCommand < Command
   end
 
   def usage
-    "@describe [{object}][={description}]"
+    "/describe [{object}][={description}]"
   end
 
   def help
@@ -40,8 +40,8 @@ class DescribeCommand < Command
 ={description} then it just displays the current description.
 
 Examples
-@describe me=Quite a fella
-@describe me  # resets description
+/describe me=Quite a fella
+/describe me  # resets description
 
 EOS
   end

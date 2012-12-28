@@ -29,7 +29,7 @@ class LookCommand < Command
   end
 
   def usage
-    "look"
+    "/look"
   end
 
   def help

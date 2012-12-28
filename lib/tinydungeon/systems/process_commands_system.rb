@@ -28,24 +28,24 @@ class ProcessCommandsSystem < Wreckem::System
 
     @namedb = NameDB.all[0]
     @commands = {
-      '@create' => CreateCommand.new(self),
-      '@describe' => DescribeCommand.new(self),
-      '@dig' => DigCommand.new(self),
-      'drop' => DropCommand.new(self),
-      '@entity_examine' => EntityExamineCommand.new(self),
-      'examine' => ExamineCommand.new(self),
-      'get' => GetCommand.new(self),
-      'inventory' => InventoryCommand.new(self),
-      'look' => LookCommand.new(self),
-      '@open' => OpenCommand.new(self),
-      'quit' => QuitCommand.new(self),
-      'save' => SaveCommand.new(self),
-      'say' => SayCommand.new(self),
-      'tell' => TellCommand.new(self),
-      'who' => WhoCommand.new(self),
+      '/create' => CreateCommand.new(self),
+      '/describe' => DescribeCommand.new(self),
+      '/dig' => DigCommand.new(self),
+      '/rop' => DropCommand.new(self),
+      '/entity_examine' => EntityExamineCommand.new(self),
+      '/examine' => ExamineCommand.new(self),
+      '/get' => GetCommand.new(self),
+      '/inventory' => InventoryCommand.new(self),
+      '/look' => LookCommand.new(self),
+      '/open' => OpenCommand.new(self),
+      '/quit' => QuitCommand.new(self),
+      '/save' => SaveCommand.new(self),
+      '/say' => SayCommand.new(self),
+      '/tell' => TellCommand.new(self),
+      '/who' => WhoCommand.new(self),
     }
-    @commands['goto'] = GotoCommand.new(self, @commands['look'])
-    @commands['help'] = HelpCommand.new(self, @commands)
+    @commands['/goto'] = GotoCommand.new(self, @commands['/look'])
+    @commands['/help'] = HelpCommand.new(self, @commands)
   end
 
   def process

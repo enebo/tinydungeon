@@ -30,7 +30,7 @@ class DropCommand < Command
   end
 
   def usage
-    "drop {object}"
+    "/drop {object}"
   end
 
   def help
@@ -39,9 +39,9 @@ class DropCommand < Command
 {object} can be number or name of anything in your inventory.
 
 Examples
-@drop knife
+/drop knife
 
-See also inventory, get
+See also /inventory, /get
 EOS
   end
 end

@@ -24,7 +24,7 @@ class InventoryCommand < Command
   end
 
   def usage
-    "inventory"
+    "/inventory"
   end
 
   def help

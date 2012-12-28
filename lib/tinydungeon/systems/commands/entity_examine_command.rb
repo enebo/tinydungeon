@@ -17,7 +17,7 @@ class EntityExamineCommand < Command
   end
 
   def usage
-    "@entity_examine [{object}]"
+    "/entity_examine [{object}]"
   end
 
   def help
@@ -27,7 +27,7 @@ class EntityExamineCommand < Command
 ={description} then it just displays the current description.
 
 Examples
-@entity_examine me
+/entity_examine me
 
 EOS
   end

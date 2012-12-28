@@ -13,7 +13,7 @@ class DigCommand < Command
   end
 
   def usage
-    "@dig {name}"
+    "/dig {name}"
   end
 
   def help
@@ -23,9 +23,9 @@ class DigCommand < Command
 as a string in the system.
 
 Examples
-@dig Dark Grotto
+/dig Dark Grotto
 
-See Also: @describe, @open
+See Also: /describe, /open
 EOS
   end
 end

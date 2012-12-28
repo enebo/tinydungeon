@@ -31,7 +31,7 @@ class GetCommand < Command
   end
 
   def usage
-    "get {object}"
+    "/get {object}"
   end
 
   def help
@@ -40,9 +40,9 @@ class GetCommand < Command
 {object} can be number or name of anything in your inventory.
 
 Examples
-@get knife
+/get knife
 
-See also inventory, drop
+See also /inventory, /drop
 EOS
   end
 end

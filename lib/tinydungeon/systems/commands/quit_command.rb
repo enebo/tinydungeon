@@ -22,6 +22,6 @@ class QuitCommand < Command
   end
 
   def usage
-    "quit"
+    "/quit"
   end
 end

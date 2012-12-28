@@ -38,7 +38,7 @@ class GotoCommand < Command
   end
 
   def usage
-    "goto {direction}"
+    "/goto {direction}"
   end
 
   def help
@@ -48,8 +48,7 @@ class GotoCommand < Command
 ={description} then it just displays the current description.
 
 Examples
-@describe me=Quite a fella
-@describe me
+/goto north
 
 EOS
   end

@@ -12,6 +12,6 @@ class SaveCommand < Command
   end
 
   def usage
-    "@save {filename}"
+    "/save {filename}"
   end
 end
