@@ -49,7 +49,7 @@ class ProcessCommandsSystem < Wreckem::System
   end
 
   def process
-    CommandLine.all do |cmd|
+    CommandLine.all.each do |cmd|
       next unless /(?<command>[\S]+)/ =~ cmd.value
       object = @commands[command] || @commands['/say']
       cmd.delete

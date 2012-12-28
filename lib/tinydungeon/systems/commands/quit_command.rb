@@ -12,7 +12,6 @@ class QuitCommand < Command
     end
     player.delete last_room
     
-    
     game.connections[player] = nil
   end
 

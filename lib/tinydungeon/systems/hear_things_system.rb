@@ -15,7 +15,7 @@ class HearThingsSystem < Wreckem::System
   def process
     new_messages = []
 
-    MessageRef.all do |message_ref|
+    MessageRef.all.each do |message_ref|
       receiver = message_ref.entity
       receiver.delete message_ref
       message = manager[message_ref]

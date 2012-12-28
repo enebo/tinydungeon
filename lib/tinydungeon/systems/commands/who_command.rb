@@ -7,20 +7,13 @@ class WhoCommand < Command
     player = cmd.entity
     specific = rest(cmd)
 
-    if specific
-      Player.all do |p|
-        peep = p.entity
-
-        if peep.one(Name).same?(specific)
-          output_you player, "Player #{specific} is online."
-          break
-        end
-      end
+    if specific &&
+        Player.all.map(&:entity).find { |p| p.one(Name).same?(specific) }
+      output_you player, "Player #{specific} is online."
     else
-      list = []
-      Player.all do |p|
-        peep = p.entity
-        list << peep.one(Name) if !peep.is?(LastContainedBy)
+      list = Player.all.map(&:entity).inject([]) do |l, peep|
+        l << peep.one(Name) if !peep.is?(LastContainedBy)
+        l
       end
       
       output_you player, "Players online: #{list.join(', ')}."

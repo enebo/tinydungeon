@@ -1,6 +1,8 @@
 require 'wreckem'
 require 'wreckem/game'
 require 'wreckem/entity_manager'
+require 'wreckem/backends/memory'
+require 'wreckem/backends/stat_wrapper'
 
 require 'tinydungeon/game_components'
 
@@ -15,7 +17,11 @@ class TinyDungeon < Wreckem::Game
   attr_reader :connections, :players, :entry
   include ContainerHelper, LinkHelper
 
+#  attr_reader :stats
+
   def initialize
+#    @stats = Wreckem::StatWrapper.new(Wreckem::MemoryStore.new)
+#    super(@stats)
     super()
 
     # We keep these mappings out of our EC system since they are transient
