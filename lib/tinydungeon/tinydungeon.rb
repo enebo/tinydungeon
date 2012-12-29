@@ -1,4 +1,3 @@
-require 'wreckem'
 require 'wreckem/game'
 require 'wreckem/entity_manager'
 require 'wreckem/backends/memory'
@@ -79,12 +78,12 @@ class TinyDungeon < Wreckem::Game
     end
 
     # FIXME: This will never work across threads (ok?)
-    # tinymud mapping between name,number, and uuid
+    # tinymud mapping between name,number, and id
     namedb = NameDB.all[0]
     number = namedb.next_number
     namedb.name_map[obj_name.value] = number
     namedb.next_number += 1
-    namedb.num_map[number] = obj.uuid
+    namedb.num_map[number] = obj.id
 
     obj.has Num.new(number)
 
@@ -94,7 +93,7 @@ class TinyDungeon < Wreckem::Game
   def create_room(name, description, owner=nil)
     room = create_object(name, description, owner=nil).tap do |room|
       room.is Container
-      room.has ContainedBy.new(room.uuid) # FIXME: say from room to others hack
+      room.has ContainedBy.new(room) # FIXME: say from room to others hack
     end
   end
 end

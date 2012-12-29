@@ -1,9 +1,9 @@
 require 'wreckem/component'
 
-# Tinymud object db.  Names and numbers mapped to uuid.
+# Tinymud object db.  Names and numbers mapped to id.
 class NameDB < Wreckem::Component
   attr_reader :name_map # {name => num}
-  attr_reader :num_map  # {num => uuid}
+  attr_reader :num_map  # {num => id}
   attr_accessor :next_number
 
   def initialize

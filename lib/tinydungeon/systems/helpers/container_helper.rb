@@ -5,15 +5,15 @@ module ContainerHelper
   # Add an entity to a container entity
   def add_to_container(container, entity)
     must_be_container(container)
-    entity.has ContainedBy.new(container.uuid)
-    container.add Containee.new(entity.uuid)
+    entity.has ContainedBy.new(container)
+    container.add Containee.new(entity)
   end
 
   def swap_containers(old_container, new_container, entity)
     must_be_container(new_container)
-    old_container.many(Containee).each { |l| l.delete if l.same? entity.uuid }
-    entity.one(ContainedBy).value = new_container.uuid
-    new_container.add Containee.new(entity.uuid)
+    old_container.many(Containee).each { |l| l.delete if l.same? entity.id }
+    entity.one(ContainedBy).value = new_container.id
+    new_container.add Containee.new(entity)
   end
 
   def container?(entity)

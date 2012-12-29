@@ -7,8 +7,8 @@ module LinkHelper
       aliases.each do |direction_alias|
         e.has NameAlias.new(direction_alias)
       end
-      e.has LinkRef.new(destination_room.uuid) if destination_room
-      source_room.has LinkRef.new(e.uuid)
+      e.has LinkRef.new(destination_room) if destination_room
+      source_room.has LinkRef.new(e)
     end
   end
 
