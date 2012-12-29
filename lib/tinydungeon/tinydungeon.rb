@@ -35,8 +35,6 @@ class TinyDungeon < Wreckem::Game
       return 
     end
 
-    manager.create_entity { |e| e.has NameDB.new }
-
     @entry = create_room("Echo Chamber", "A round domed room").tap do |room|
       room.is Entry, Echo
     end
@@ -70,24 +68,11 @@ class TinyDungeon < Wreckem::Game
   end
 
   def create_object(name, description, owner=nil)
-    obj_name = Name.new(name)
-    obj = manager.create_entity do |e|
-      e.has obj_name
+    obj = manager.create_entity(name) do |e|
+      e.has Name.new(name)
       e.has Description.new(description)
       e.has Owner.new(owner) if owner
     end
-
-    # FIXME: This will never work across threads (ok?)
-    # tinymud mapping between name,number, and id
-    namedb = NameDB.all[0]
-    number = namedb.next_number
-    namedb.name_map[obj_name.value] = number
-    namedb.next_number += 1
-    namedb.num_map[number] = obj.id
-
-    obj.has Num.new(number)
-
-    obj
   end
 
   def create_room(name, description, owner=nil)

@@ -6,7 +6,7 @@ class OpenCommand < Command
     directions, num = line.split('=')
     directions = directions.split(';')
 
-    destination_id = namedb.num_map[num.to_i]
+    destination_id = manager[num.to_i]
     if !destination_id && num
       output_you cmd.entity, "Error: No such room number (\##{num})"
       return

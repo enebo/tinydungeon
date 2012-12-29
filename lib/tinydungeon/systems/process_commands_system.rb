@@ -21,12 +21,11 @@ require 'tinydungeon/systems/commands/tell_command'
 require 'tinydungeon/systems/commands/who_command'
 
 class ProcessCommandsSystem < Wreckem::System
-  attr_reader :namedb, :commands
+  attr_reader :commands
 
   def initialize(game)
     super(game)
 
-    @namedb = NameDB.all[0]
     @commands = {
       '/create' => CreateCommand.new(self),
       '/describe' => DescribeCommand.new(self),

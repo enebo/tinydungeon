@@ -21,7 +21,7 @@ class LookCommand < Command
   end
 
   def label_for(entity)
-    "(\##{entity.one(Num)}) #{entity.one(Name)} - #{entity.one(Description)}"
+    "(\##{entity.id}) #{entity.one(Name)} - #{entity.one(Description)}"
   end
 
   def description

@@ -14,7 +14,6 @@ Name = Wreckem::Component.define_as_string
 NameAlias = Wreckem::Component.define_as_string
 Owner = Wreckem::Component.define_as_ref
 NPC = Wreckem::Component.define
-Num = Wreckem::Component.define_as_int
 # An ordinary item (!Room,Player,NPC,{unlinkedobject})
 NormalObject = Wreckem::Component.define
 Player = Wreckem::Component.define
@@ -28,5 +27,3 @@ OutputMessage = Wreckem::Component.define_as_string
 Timestamp = Wreckem::Component.define_as_int
 # Who sent something (like a message)
 Sender = Wreckem::Component.define_as_ref
-
-require 'tinydungeon/components/namedb'
