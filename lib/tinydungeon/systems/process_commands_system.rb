@@ -2,6 +2,7 @@ require 'wreckem/system'
 
 require 'tinydungeon/game_components'
 
+require 'tinydungeon/systems/commands/bind_command'
 require 'tinydungeon/systems/commands/create_command'
 require 'tinydungeon/systems/commands/describe_command'
 require 'tinydungeon/systems/commands/drop_command'
@@ -29,10 +30,11 @@ class ProcessCommandsSystem < Wreckem::System
 
     ee = EntityExamineCommand.new(self)
     @commands = {
+      '/bind' => BindCommand.new(self),
       '/create' => CreateCommand.new(self),
       '/describe' => DescribeCommand.new(self),
       '/dig' => DigCommand.new(self),
-      '/rop' => DropCommand.new(self),
+      '/drop' => DropCommand.new(self),
       '/entity_examine' => ee,
       '/ee' => ee,
       '/examine' => ExamineCommand.new(self),

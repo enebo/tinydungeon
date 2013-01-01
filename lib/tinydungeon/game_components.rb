@@ -1,5 +1,6 @@
 require 'wreckem/component'
 
+BindRoom = Wreckem::Component::define_as_ref
 ContainedBy = Wreckem::Component::define_as_ref
 CommandLine = Wreckem::Component.define_as_string
 Containee = Wreckem::Component::define_as_ref
@@ -21,7 +22,6 @@ Player = Wreckem::Component.define
 MessageRef = Wreckem::Component.define_as_ref
 # The type of message and the string sent
 SayMessage = Wreckem::Component.define_as_string
-SpawnRoom = Wreckem::Component::define_as_ref
 # Output which is not a person talking
 OutputMessage = Wreckem::Component.define_as_string
 # When something happened (like when a message was sent)

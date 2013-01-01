@@ -66,7 +66,7 @@ class AcquireCommandsSystem < Wreckem::System
           player = game.create_player(name, "help @describe to set me")
         end
       else
-        room = Wreckem::Entity.find(player.one(SpawnRoom))
+        room = Wreckem::Entity.find(player.one(BindRoom))
         room = game.entry unless room
         puts "ROOM: #{room.class.inspect} #{game.entry.as_string}"
         client.puts "Welcome back #{player.one(Name)}"
