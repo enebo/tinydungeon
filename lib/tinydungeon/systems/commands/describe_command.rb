@@ -14,17 +14,10 @@ class DescribeCommand < Command
       
     if entity
       if cmd.value !~ %r{=(.*)}
-        descr = entity.one(Description)
-        descr.value = ''
-        descr.save
-        
+        entity.one(Description).update!('')
         output_you cmd.entity, "#{name}(\##{num}) description reset."
       else
-        descr = entity.one(Description)
-        if entity
-          descr.value = description
-          descr.save
-        end
+        entity.one(Description).update!(description)
         output_you cmd.entity, "#{name}(\##{num}) changed to #{description}."
       end
     else

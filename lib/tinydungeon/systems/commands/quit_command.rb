@@ -5,12 +5,9 @@ class QuitCommand < Command
     player = cmd.entity
 
     last_room = player.one(ContainedBy)
-    player.add LastContainedBy.new(last_room)
-    
-    Wreckem::Entity.find(last_room).many(Containee) do |c|
-      c.delete if c.same? player.id
-    end
+    last_room.to_entity.many(Containee) { |c| c.delete if c.same? player.id }
     last_room.delete
+    player.one(Online).delete
     
     game.connections[player.id] = nil
   end

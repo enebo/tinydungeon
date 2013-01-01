@@ -12,7 +12,7 @@ class WhoCommand < Command
       output_you player, "Player #{specific} is online."
     else
       list = Player.all.map(&:entity).inject([]) do |l, peep|
-        l << peep.one(Name) if !peep.is?(LastContainedBy)
+        l << peep.one(Name) if peep.is?(Online)
         l
       end
       

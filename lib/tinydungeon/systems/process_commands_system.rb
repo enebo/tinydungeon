@@ -15,6 +15,7 @@ require 'tinydungeon/systems/commands/inventory_command'
 require 'tinydungeon/systems/commands/look_command'
 require 'tinydungeon/systems/commands/open_command'
 require 'tinydungeon/systems/commands/quit_command'
+require 'tinydungeon/systems/commands/rm_command'
 require 'tinydungeon/systems/commands/save_command'
 require 'tinydungeon/systems/commands/say_command'
 require 'tinydungeon/systems/commands/tell_command'
@@ -40,6 +41,7 @@ class ProcessCommandsSystem < Wreckem::System
       '/look' => LookCommand.new(self),
       '/open' => OpenCommand.new(self),
       '/quit' => QuitCommand.new(self),
+      '/rm' => RmCommand.new(self),
       '/save' => SaveCommand.new(self),
       '/say' => SayCommand.new(self),
       '/tell' => TellCommand.new(self),

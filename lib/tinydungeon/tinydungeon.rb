@@ -30,8 +30,8 @@ class TinyDungeon < Wreckem::Game
   end
 
   def register_entities
-    unless Entry.all.empty? # Entry room is a required component
-      @entry = Entry.all.first.entity
+    unless Entry.all.to_a.empty? # Entry room is a required component
+      @entry = Entry.all.to_a.first.entity
       return
     end
 
@@ -67,7 +67,7 @@ class TinyDungeon < Wreckem::Game
     end
   end
 
-  def create_object(name, description, owner=nil)
+  def create_object(name, description='', owner=nil)
     Wreckem::Entity.is! do |e|
       e.has Name.new(name)
       e.has Description.new(description)

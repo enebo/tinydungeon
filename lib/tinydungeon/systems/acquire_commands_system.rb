@@ -55,7 +55,7 @@ class AcquireCommandsSystem < Wreckem::System
       # FIXME: Whoa...huge search space
       Player.intersects(Name) do |_, entity_name|
         if entity_name.same?(name)
-          player = entity
+          player = entity_name.entity
           break;
         end
       end
@@ -66,18 +66,13 @@ class AcquireCommandsSystem < Wreckem::System
           player = game.create_player(name, "help @describe to set me")
         end
       else
-        # FIXME: On crash lastcontained by may not exist and use contained by
-        last_room = player.one(LastContainedBy)
-        room = Wreckem::Entity.find(last_room)
-        puts "LR #{last_room}, R: #{room}"
-        if last_room and room
-          player.delete last_room
-        else
-          room = game.entry
-        end
+        room = Wreckem::Entity.find(player.one(SpawnRoom))
+        room = game.entry unless room
+        puts "ROOM: #{room.class.inspect} #{game.entry.as_string}"
         client.puts "Welcome back #{player.one(Name)}"
         add_to_container(room, player)
       end
+      player.is(Online)
     end
     game.connections[player.id] = client
     game.players[client] = player
