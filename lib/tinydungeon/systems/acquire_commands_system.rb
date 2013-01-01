@@ -32,7 +32,7 @@ class AcquireCommandsSystem < Wreckem::System
             client.close
           else
             player = game.players[client]
-            if !game.connections[player]  # trying to log
+            if !game.connections[player.id]  # trying to log
               puts "Logging out..."
               @fds.delete client
               client.close
@@ -53,7 +53,7 @@ class AcquireCommandsSystem < Wreckem::System
       client.write("What is your name? ")
       name = client.gets("\n").chomp
       # FIXME: Whoa...huge search space
-      Player.intersects(Name) do |entity, _, entity_name|
+      Player.intersects(Name) do |_, entity_name|
         if entity_name.same?(name)
           player = entity
           break;
@@ -68,7 +68,8 @@ class AcquireCommandsSystem < Wreckem::System
       else
         # FIXME: On crash lastcontained by may not exist and use contained by
         last_room = player.one(LastContainedBy)
-        room = manager[last_room]
+        room = Wreckem::Entity.find(last_room)
+        puts "LR #{last_room}, R: #{room}"
         if last_room and room
           player.delete last_room
         else
@@ -78,7 +79,7 @@ class AcquireCommandsSystem < Wreckem::System
         add_to_container(room, player)
       end
     end
-    game.connections[player] = client
+    game.connections[player.id] = client
     game.players[client] = player
     client.write("Connected as player #{player.one(Name)}\n\n ")
 

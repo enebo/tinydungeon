@@ -6,7 +6,7 @@ class EntityExamineCommand < Command
     name, num, entity = name_to_object_info(cmd.entity, name)
       
     if entity
-      output_you cmd.entity, manager.entity_as_string(entity)
+      output_you cmd.entity, entity.as_string
     else
       output_you cmd.entity, "No such object named: #{name}"
     end

@@ -36,7 +36,7 @@ module MessageHelper
   end
 
   def create_message(type)
-    manager.create_entity do |message|
+    Wreckem::Entity.is! do |message|
       message.has type
       message.has Timestamp.new(Time.now.to_i)
     end

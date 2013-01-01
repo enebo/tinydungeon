@@ -7,12 +7,12 @@ class QuitCommand < Command
     last_room = player.one(ContainedBy)
     player.add LastContainedBy.new(last_room)
     
-    manager[last_room].many(Containee) do |c|
+    Wreckem::Entity.find(last_room).many(Containee) do |c|
       c.delete if c.same? player.id
     end
-    player.delete last_room
+    last_room.delete
     
-    game.connections[player] = nil
+    game.connections[player.id] = nil
   end
 
   def description

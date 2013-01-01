@@ -6,7 +6,7 @@ class ExamineCommand < Command
     name, num, entity = name_to_object_info(cmd.entity, name)
       
     if entity
-        owner = manager[entity.one(Owner)]
+        owner = Wreckem::Entity.find(entity.one(Owner))
         description = entity.one(Description)
         message = "#{name}(\##{num}) [#{owner.one(Name)}] - #{description}\n"
         output_you cmd.entity, message

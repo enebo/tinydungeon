@@ -5,7 +5,7 @@ require 'tinydungeon/game_components'
 class LookCommand < Command
   def execute(cmd)
     player = cmd.entity
-    room = manager[player.one(ContainedBy)]
+    room = Wreckem::Entity.find(player.one(ContainedBy))
     message = "\n#{label_for(room)}\n\nThings here:\n"
 
     each_container_entity(room) do |e|
@@ -13,7 +13,7 @@ class LookCommand < Command
     end
     message << "\n"
 
-    links = link_names(room)
+    links = link_display_names(room)
 
     message << "Exits: #{links.join(', ')}\n" unless links.empty?
 

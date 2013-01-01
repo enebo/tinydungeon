@@ -6,13 +6,13 @@ class OpenCommand < Command
     directions, num = line.split('=')
     directions = directions.split(';')
 
-    destination_id = manager[num.to_i]
+    destination_id = Wreckem::Entity.find(num.to_i)
     if !destination_id && num
       output_you cmd.entity, "Error: No such room number (\##{num})"
       return
     end
 
-    destination = manager[destination_id]
+    destination = Wreckem::Entity.find(destination_id)
     if container?(destination)
       source_room = container_for(cmd.entity)
       link = game.create_link(source_room, destination, directions)

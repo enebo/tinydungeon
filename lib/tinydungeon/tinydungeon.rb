@@ -30,9 +30,9 @@ class TinyDungeon < Wreckem::Game
   end
 
   def register_entities
-    if manager.size > 0 # Already loaded..hacky
-      @entry = Entry.all[0].entity
-      return 
+    unless Entry.all.empty? # Entry room is a required component
+      @entry = Entry.all.first.entity
+      return
     end
 
     @entry = create_room("Echo Chamber", "A round domed room").tap do |room|
@@ -68,7 +68,7 @@ class TinyDungeon < Wreckem::Game
   end
 
   def create_object(name, description, owner=nil)
-    obj = manager.create_entity(name) do |e|
+    Wreckem::Entity.is! do |e|
       e.has Name.new(name)
       e.has Description.new(description)
       e.has Owner.new(owner) if owner
@@ -76,7 +76,7 @@ class TinyDungeon < Wreckem::Game
   end
 
   def create_room(name, description, owner=nil)
-    room = create_object(name, description, owner=nil).tap do |room|
+    create_object(name, description, owner=nil).tap do |room|
       room.is Container
       room.has ContainedBy.new(room) # FIXME: say from room to others hack
     end

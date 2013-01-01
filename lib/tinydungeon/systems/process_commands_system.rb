@@ -26,12 +26,14 @@ class ProcessCommandsSystem < Wreckem::System
   def initialize(game)
     super(game)
 
+    ee = EntityExamineCommand.new(self)
     @commands = {
       '/create' => CreateCommand.new(self),
       '/describe' => DescribeCommand.new(self),
       '/dig' => DigCommand.new(self),
       '/rop' => DropCommand.new(self),
-      '/entity_examine' => EntityExamineCommand.new(self),
+      '/entity_examine' => ee,
+      '/ee' => ee,
       '/examine' => ExamineCommand.new(self),
       '/get' => GetCommand.new(self),
       '/inventory' => InventoryCommand.new(self),
@@ -52,7 +54,11 @@ class ProcessCommandsSystem < Wreckem::System
       next unless /(?<command>[\S]+)/ =~ cmd.value
       object = @commands[command] || @commands['/say']
       cmd.delete
-      object.execute(cmd)
+      begin
+        object.execute(cmd)
+      rescue 
+        puts "PUTS: #{cmd.entity.as_string}"
+      end
     end
   end
 end

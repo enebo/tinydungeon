@@ -14,6 +14,8 @@ class GotoCommand < Command
     room = container_for(person)
     link = link_for(room, direction)
 
+    puts "LINK FOUND: #{link.as_string}"
+
     if !link
       output_you person, "No such exit"
     else
@@ -25,7 +27,8 @@ class GotoCommand < Command
       if !exit_ref
         # FIXME: Add unlink fail/ofail stuff.
       else
-        new_room = manager[exit_ref] # FIXME: Error handling for this
+        # FIXME: Error handling for this
+        new_room = Wreckem::Entity.find(exit_ref) 
         swap_containers(room, new_room, person)
         output_others person, "#{person.one(Name)} enters the room."
       end
