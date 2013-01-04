@@ -4,6 +4,7 @@ require 'wreckem/backends/memory'
 require 'wreckem/backends/stat_wrapper'
 
 require 'tinydungeon/game_components'
+require 'tinydungeon/player_connection'
 
 require 'tinydungeon/systems/helpers/container_helper'
 require 'tinydungeon/systems/helpers/link_helper'
@@ -25,8 +26,8 @@ class TinyDungeon < Wreckem::Game
 
     # We keep these mappings out of our EC system since they are transient
     # and full socket objects
-    @connections = {}
-    @players = {}
+    @connections = {} # {socket => Players}
+    @players = {}     # {player.id => Players}
   end
 
   def register_entities
@@ -61,9 +62,8 @@ class TinyDungeon < Wreckem::Game
   # Creators/Templates
   def create_player(name=nil, description=nil, room=entry)
     create_object(name, description, @admin).tap do |player|
-      player.is Player
+      player.is Player, Container
       add_to_container(room, player) if room
-      player.is Container
     end
   end
 

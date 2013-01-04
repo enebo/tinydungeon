@@ -32,7 +32,7 @@ class HearThingsSystem < Wreckem::System
         end
 
         if game.connections[receiver.id]
-          game.connections[receiver.id].puts msg if msg
+          game.connections[receiver.id].send_output msg if msg
         else
           puts "Player no longer on...dropping msg: #{msg}"
         end

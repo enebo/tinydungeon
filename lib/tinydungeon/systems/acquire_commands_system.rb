@@ -14,37 +14,36 @@ class AcquireCommandsSystem < Wreckem::System
   def process
     port = 9001
     @server = TCPServer.open(port)
-    @fds = [@server]
+    rds = [@server]
     puts "Server started on port #{port}"
 
     while true
-      if ios = select(@fds, [], [], 10)
-        ready_sockets = ios.first
-        ready_sockets.each do |client|
+      if ios = select(rds, [], [], 10)
+        read_sockets = ios.first
+        read_sockets.each do |client|
           if client == @server
             puts "CLIENT CONNECTED"
             client, _ = @server.accept
-            @fds << client
+            rds << client
             login(client)
           elsif client.eof?
             puts "CLIENT EOF'd"
-            @fds.delete client
+            rds.delete client
             client.close
           else
             player = game.players[client]
-            if !game.connections[player.id]  # trying to log
-              puts "Logging out..."
-              @fds.delete client
-              client.close
+            if player.logged_out?
+              rds.delete client
+              game.players.delete client
             else
-              game.players[client].add CommandLine.new(client.gets("\n").chomp)
+              player.process_input
             end
           end
         end
       end
     end
   ensure
-    @fds.each { |c| c.close }
+    rds.each { |c| c.close }
   end
 
   def login(client)
@@ -68,14 +67,14 @@ class AcquireCommandsSystem < Wreckem::System
       else
         room = Wreckem::Entity.find(player.one(BindRoom))
         room = game.entry unless room
-        puts "ROOM: #{room.class.inspect} #{game.entry.as_string}"
         client.puts "Welcome back #{player.one(Name)}"
         add_to_container(room, player)
       end
       player.is(Online)
     end
-    game.connections[player.id] = client
-    game.players[client] = player
+    player_connection = PlayerConnection.new(player, client)
+    game.connections[player.id] = player_connection
+    game.players[client] = player_connection
     client.write("Connected as player #{player.one(Name)}\n\n ")
 
     player.add CommandLine.new("/look")

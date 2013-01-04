@@ -9,7 +9,7 @@ class QuitCommand < Command
     last_room.delete
     player.one(Online).delete
     
-    game.connections[player.id] = nil
+    game.connections[player.id].logout
   end
 
   def description
