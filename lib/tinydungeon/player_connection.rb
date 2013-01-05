@@ -1,8 +1,8 @@
 ##
 # A client connection representing a player in the game.  
 class PlayerConnection
-  def initialize(entity, socket)
-    @entity, @socket = entity, socket
+  def initialize(entity, socket, system)
+    @entity, @socket, @system = entity, socket, system
     @buf = ''
     @log_out = false
   end
@@ -15,6 +15,7 @@ class PlayerConnection
     @log_out = true
     @socket.puts "Good bye"
     @socket.close
+    @system.clients.delete @socket
   end
 
   def process_input
@@ -24,8 +25,6 @@ class PlayerConnection
       command_line, @buf = @buf.split(/\r?\n/, 2)
       @entity.has CommandLine.new(command_line)
     end
-  rescue
-    puts "UOH: #{$!}"
   end
 
   def send_output(msg)

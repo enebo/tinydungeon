@@ -3,10 +3,7 @@ require 'tinydungeon/game_components'
 require 'tinydungeon/systems/commands/command'
 
 class GotoCommand < Command
-  def initialize(system, look_command)
-    super(system)
-    @look_command = look_command
-  end
+  attr_accessor :look_command
 
   def execute(cmd)
     direction = rest(cmd)

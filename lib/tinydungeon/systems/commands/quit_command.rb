@@ -19,4 +19,8 @@ class QuitCommand < Command
   def usage
     "/quit"
   end
+
+  def aliases
+    ['/exit']
+  end
 end

@@ -20,6 +20,10 @@ class EntityExamineCommand < Command
     "/entity_examine [{object}]"
   end
 
+  def aliases
+    ['/ee']
+  end
+
   def help
     super + <<EOS
 

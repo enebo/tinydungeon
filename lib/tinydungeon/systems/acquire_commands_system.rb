@@ -7,6 +7,8 @@ require 'tinydungeon/systems/helpers/container_helper'
 class AcquireCommandsSystem < Wreckem::System
   include ContainerHelper
 
+  attr_reader :clients
+
   def initialize(game)
     super(game)
   end
@@ -14,36 +16,45 @@ class AcquireCommandsSystem < Wreckem::System
   def process
     port = 9001
     @server = TCPServer.open(port)
-    rds = [@server]
+    @clients = []
     puts "Server started on port #{port}"
 
     while true
-      if ios = select(rds, [], [], 10)
-        read_sockets = ios.first
-        read_sockets.each do |client|
-          if client == @server
-            puts "CLIENT CONNECTED"
-            client, _ = @server.accept
-            rds << client
-            login(client)
-          elsif client.eof?
-            puts "CLIENT EOF'd"
-            rds.delete client
+      begin
+        if ios = select([@server] + @clients, [], @clients, 10)
+          error_sockets = ios[2]
+          error_sockets.each do |client|
             client.close
-          else
-            player = game.players[client]
-            if player.logged_out?
-              rds.delete client
-              game.players.delete client
+            game.players.delete client
+          end
+          read_sockets = ios.first
+          read_sockets.each do |client|
+            if client == @server
+              client, _ = @server.accept
+              @clients << client
+              login(client)
+            elsif client.eof?
+              @clients.delete client
+              client.close
             else
-              player.process_input
+              player = game.players[client]
+              if player.logged_out?
+                @clients.delete client
+                game.players.delete client
+              else
+                player.process_input
+              end
             end
           end
         end
+      rescue IOError
+        puts "Let's hope this was only a quitting player"
       end
     end
+  rescue
+    puts "WTF: #{$!} #{$!.class} #{$!.backtrace}"
   ensure
-    rds.each { |c| c.close }
+    @clients.each { |c| c.close }
   end
 
   def login(client)
@@ -72,7 +83,7 @@ class AcquireCommandsSystem < Wreckem::System
       end
       player.is(Online)
     end
-    player_connection = PlayerConnection.new(player, client)
+    player_connection = PlayerConnection.new(player, client, self)
     game.connections[player.id] = player_connection
     game.players[client] = player_connection
     client.write("Connected as player #{player.one(Name)}\n\n ")

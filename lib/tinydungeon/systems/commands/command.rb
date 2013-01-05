@@ -31,7 +31,7 @@ class Command
   # return multi-line specific help for the command
   def help
     <<EOS
-#{description}"
+#{description}
 
 Usage: #{usage}
 EOS
@@ -47,5 +47,19 @@ EOS
 
   def rest(cmd)
     cmd.value.split(/\s+/, 2)[1]
+  end
+
+  def name
+    '/' + self.class.name.downcase.split(/command$/)[0]
+  end
+
+  def aliases
+    []
+  end
+
+  def self.register(command_system)
+    command = new(command_system)
+    command_system.commands[command.name] = command
+    command.aliases.each { |a| command_system.aliases[a] = command }
   end
 end
