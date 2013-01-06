@@ -17,12 +17,11 @@ class TinyDungeon < Wreckem::Game
   attr_reader :connections, :players, :entry
   include ContainerHelper, LinkHelper
 
-#  attr_reader :stats
+  attr_reader :stats
 
   def initialize
-#    @stats = Wreckem::StatWrapper.new(Wreckem::MemoryStore.new)
-#    super(@stats)
-    super()
+    @stats = Wreckem::StatWrapper.new(Wreckem::SequelStore.new)
+    super(@stats)
 
     # We keep these mappings out of our EC system since they are transient
     # and full socket objects

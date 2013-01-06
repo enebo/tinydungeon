@@ -63,12 +63,14 @@ class AcquireCommandsSystem < Wreckem::System
       client.write("What is your name? ")
       name = client.gets("\n").chomp
       # FIXME: Whoa...huge search space
+p game.stats.all_stats
       Player.intersects(Name) do |_, entity_name|
         if entity_name.same?(name)
           player = entity_name.entity
           break;
         end
       end
+p game.stats.all_stats
 
       if !player
         client.write "Player name #{name} does not exist. Create it (y/n)?  "

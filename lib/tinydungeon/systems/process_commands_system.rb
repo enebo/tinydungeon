@@ -19,6 +19,7 @@ require 'tinydungeon/systems/commands/quit_command'
 require 'tinydungeon/systems/commands/rm_command'
 require 'tinydungeon/systems/commands/save_command'
 require 'tinydungeon/systems/commands/say_command'
+require 'tinydungeon/systems/commands/stats_command'
 require 'tinydungeon/systems/commands/tell_command'
 require 'tinydungeon/systems/commands/who_command'
 
@@ -33,7 +34,8 @@ class ProcessCommandsSystem < Wreckem::System
     [BindCommand, BindCommand, CreateCommand, DescribeCommand, DigCommand,
      DropCommand, EntityExamineCommand, ExamineCommand, GetCommand, GotoCommand,
      HelpCommand, InventoryCommand, LookCommand, OpenCommand, QuitCommand,
-     RmCommand, SaveCommand, SayCommand, TellCommand, WhoCommand].each do |c|
+     RmCommand, SaveCommand, SayCommand, StatsCommand, TellCommand, 
+     WhoCommand].each do |c|
       c.register(self)
     end
 
