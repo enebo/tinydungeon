@@ -25,32 +25,35 @@ class CombatSystem < Wreckem::System
     end
     
     list.sort { |a, b| a[1] <=> b[1] }.each do |combat_with, attacker_attack|
-      attacker = combat_with.entity
-      defender = combat_with.to_entity
-      defender_defense = defender.one(DefenseStat).value
-      defender_hp = defender.one(HitPoints)
-      
+      attacker, defender = combat_with.entity, combat_with.to_entity
+      defender_name, defender_defense, defender_hp = defender.one(Name, DefenseStat, HitPoints)
       hp = defender_hp.value
 
-      next if hp <= 0 # Only allow attacker to land blow if they still have any hps left
+      # Only allow attacker to land blow if they still have any hps left
+      if hp <= 0
+        combat_with.delete
+        next
+      end
       
-      if (defender_defense < attacker_attack)
-        damage = attacker_attack - defender_defense
+      attacker_name = attacker.one(Name)
+      
+      if (defender_defense.value < attacker_attack)
+        damage = attacker_attack - defender_defense.value
         defender_hp.value = hp - damage
         defender_hp.save
         
-        output_you attacker, "You hit #{defender.one(Name)} for #{damage} points."        
-        output_others attacker, "#{attacker.one(Name)} hits #{defender.one(Name)} for #{damage} points."
+        output_you attacker, "You hit #{defender_name} for #{damage} points."        
+        output_others attacker, "#{attacker_name} hits #{defender_name} for #{damage} points."
         
         if defender_hp.value <= 0
-          output_you attacker, "#{defender.one(Name)} has died."
-          output_others attacker, "#{defender.one(Name)} has died."
+          output_you attacker, "#{defender_name} has died."
+          output_others attacker, "#{defender_name} has died."
           defender.many(CombatWithRef).each { |dcw| dcw.delete }   # The dead fight no more
-          combat_with.delete                                    # stop fighting the dead
+          combat_with.delete                                       # stop fighting the dead
         end
       else
-        output_you attacker, "You miss #{defender.one(Name)}."
-        output_others attacker, "#{attacker.one(Name)} misses #{defender.one(Name)}."
+        output_you attacker, "You miss #{defender_name}."
+        output_others attacker, "#{attacker_name} misses #{defender_name}."
       end
     end
   end

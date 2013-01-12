@@ -14,12 +14,9 @@ class HearThingsSystem < Wreckem::System
   end
 
   def process
-    new_messages = []
-
     MessageRef.all.each do |message_ref|
-      receiver = message_ref.entity
+      receiver, message = message_ref.entity, message_ref.to_entity
       message_ref.delete
-      message = Wreckem::Entity.find(message_ref)
 
       if receiver.is?(Player)
         msg = message.one(OutputMessage)

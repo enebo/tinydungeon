@@ -13,7 +13,7 @@ class HealCommand < Command
       return
     end
 
-    heal_amount = rand(4)
+    heal_amount = rand(4) + 1
     
     new_hp = hp.value + heal_amount
     new_hp = max_hp.value if new_hp > max_hp.value
