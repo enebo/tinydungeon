@@ -62,19 +62,26 @@ class TinyDungeon < Wreckem::Game
   def create_player(name=nil, description=nil, room=entry)
     create_object(name, description, @admin).tap do |player|
       player.is Player, Container
-      player.has HitPoints.new(5)
-      player.has AttackStat.new(5)
-      player.has DefenseStat.new(5)
+      create_combat_stats(player, 5, 5, 5)
       add_to_container(room, player) if room
     end
+  end
+  
+  def create_stat(entity, type, max_type, value)
+    entity.has type.new(value)
+    entity.has max_type.new(value)
+  end
+  
+  def create_combat_stats(entity, hp_value, attack_value, defense_value)
+    create_stat(entity, HitPoints, MaxHitPoints, hp_value)
+    create_stat(entity, AttackStat, MaxAttackStat, attack_value)
+    create_stat(entity, DefenseStat, MaxDefenseStat, defense_value)
   end
   
   def create_monster(name, description, room, owner)
     create_object(name, description, owner).tap do |mob|
       mob.is NPC
-      mob.has HitPoints.new(5)
-      mob.has AttackStat.new(4)
-      mob.has DefenseStat.new(4)
+      create_combat_stats(mob, 6, 6, 6)
       add_to_container(room, mob)
     end    
   end
@@ -88,7 +95,7 @@ class TinyDungeon < Wreckem::Game
   end
 
   def create_room(name, description, owner=nil)
-    create_object(name, description, owner=nil).tap do |room|
+    create_object(name, description, owner).tap do |room|
       room.is Container
       room.has ContainedBy.new(room) # FIXME: say from room to others hack
     end

@@ -22,9 +22,10 @@ class LookCommand < Command
 
   def label_for(entity)
     hit_points = entity.one(HitPoints)
-    
+
     if hit_points
-      "(\##{entity.id}) #{entity.one(Name)} - #{entity.one(Description)} [hp: #{hit_points.value}]"
+      maxhp = entity.one(MaxHitPoints).value
+      "(\##{entity.id}) #{entity.one(Name)} - #{entity.one(Description)} [hp: #{hit_points.value} of #{maxhp}]"
     else
       "(\##{entity.id}) #{entity.one(Name)} - #{entity.one(Description)}"
     end

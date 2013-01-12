@@ -28,6 +28,12 @@ HitPoints = Wreckem::Component.define_as_int
 Link = Wreckem::Component.define
 # Where the link entity is
 LinkRef = Wreckem::Component.define_as_ref
+# Attack 0-max_int (higher is better)
+MaxAttackStat = Wreckem::Component::define_as_int
+# Defense 0-max_int (higher is better)
+MaxDefenseStat = Wreckem::Component::define_as_int
+# How many hit points do you have?
+MaxHitPoints = Wreckem::Component.define_as_int
 # Name of an object
 Name = Wreckem::Component.define_as_string
 # Alias for a link (possibly other things)

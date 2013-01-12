@@ -12,6 +12,7 @@ require 'tinydungeon/systems/commands/entity_examine_command'
 require 'tinydungeon/systems/commands/examine_command'
 require 'tinydungeon/systems/commands/get_command'
 require 'tinydungeon/systems/commands/goto_command'
+require 'tinydungeon/systems/commands/heal_command'
 require 'tinydungeon/systems/commands/help_command'
 require 'tinydungeon/systems/commands/inventory_command'
 require 'tinydungeon/systems/commands/look_command'
@@ -33,7 +34,7 @@ class ProcessCommandsSystem < Wreckem::System
     @commands, @aliases = {}, {}
 
     [AttackCommand, BindCommand, CreateCommand, DescribeCommand, DigCommand,
-     DropCommand, EntityExamineCommand, ExamineCommand, GetCommand, GotoCommand,
+     DropCommand, EntityExamineCommand, ExamineCommand, GetCommand, GotoCommand, HealCommand,
      HelpCommand, InventoryCommand, LookCommand, OpenCommand, QuitCommand,
      RmCommand, SaveCommand, SayCommand, StatsCommand, TellCommand, 
      WhoCommand].each do |c|
