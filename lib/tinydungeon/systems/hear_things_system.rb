@@ -3,6 +3,7 @@ require 'wreckem/system'
 require 'tinydungeon/game_components'
 require 'tinydungeon/systems/helpers/container_helper'
 require 'tinydungeon/systems/helpers/link_helper'
+require 'tinydungeon/systems/helpers/message_helper'
 
 class HearThingsSystem < Wreckem::System
   include ContainerHelper, LinkHelper, MessageHelper

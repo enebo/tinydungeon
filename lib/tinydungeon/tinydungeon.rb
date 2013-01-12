@@ -10,6 +10,7 @@ require 'tinydungeon/systems/helpers/container_helper'
 require 'tinydungeon/systems/helpers/link_helper'
 
 require 'tinydungeon/systems/acquire_commands_system'
+require 'tinydungeon/systems/combat_system'
 require 'tinydungeon/systems/process_commands_system'
 require 'tinydungeon/systems/hear_things_system'
 
@@ -42,10 +43,8 @@ class TinyDungeon < Wreckem::Game
     @admin = create_player("Neo", "The one", nil)
     @entry.has Owner.new(@admin) # bootstrapping...who came first
 
-    create_object('Goblozowie', "A green goblin", @admin).tap do |goblin|
-      goblin.is NPC
-      add_to_container(@entry, goblin)
-    end
+    create_monster('Goblozowie', 'A green goblin', @entry, @admin)
+    create_monster('Goblobowie', 'A green goblin', @entry, @admin)
   end
 
   def register_async_systems
@@ -55,6 +54,7 @@ class TinyDungeon < Wreckem::Game
   def register_systems
     process_commands_system = ProcessCommandsSystem.new(self)
     systems << process_commands_system
+    systems << CombatSystem.new(self)
     systems << HearThingsSystem.new(self, process_commands_system.commands)
   end
 
@@ -62,8 +62,21 @@ class TinyDungeon < Wreckem::Game
   def create_player(name=nil, description=nil, room=entry)
     create_object(name, description, @admin).tap do |player|
       player.is Player, Container
+      player.has HitPoints.new(5)
+      player.has AttackStat.new(5)
+      player.has DefenseStat.new(5)
       add_to_container(room, player) if room
     end
+  end
+  
+  def create_monster(name, description, room, owner)
+    create_object(name, description, owner).tap do |mob|
+      mob.is NPC
+      mob.has HitPoints.new(5)
+      mob.has AttackStat.new(4)
+      mob.has DefenseStat.new(4)
+      add_to_container(room, mob)
+    end    
   end
 
   def create_object(name, description='', owner=nil)

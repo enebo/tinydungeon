@@ -21,7 +21,13 @@ class LookCommand < Command
   end
 
   def label_for(entity)
-    "(\##{entity.id}) #{entity.one(Name)} - #{entity.one(Description)}"
+    hit_points = entity.one(HitPoints)
+    
+    if hit_points
+      "(\##{entity.id}) #{entity.one(Name)} - #{entity.one(Description)} [hp: #{hit_points.value}]"
+    else
+      "(\##{entity.id}) #{entity.one(Name)} - #{entity.one(Description)}"
+    end
   end
 
   def description

@@ -2,6 +2,7 @@ require 'wreckem/system'
 
 require 'tinydungeon/game_components'
 
+require 'tinydungeon/systems/commands/attack_command'
 require 'tinydungeon/systems/commands/bind_command'
 require 'tinydungeon/systems/commands/create_command'
 require 'tinydungeon/systems/commands/describe_command'
@@ -31,7 +32,7 @@ class ProcessCommandsSystem < Wreckem::System
 
     @commands, @aliases = {}, {}
 
-    [BindCommand, BindCommand, CreateCommand, DescribeCommand, DigCommand,
+    [AttackCommand, BindCommand, CreateCommand, DescribeCommand, DigCommand,
      DropCommand, EntityExamineCommand, ExamineCommand, GetCommand, GotoCommand,
      HelpCommand, InventoryCommand, LookCommand, OpenCommand, QuitCommand,
      RmCommand, SaveCommand, SayCommand, StatsCommand, TellCommand, 
@@ -50,7 +51,7 @@ class ProcessCommandsSystem < Wreckem::System
       begin
         object.execute(cmd)
       rescue 
-        puts "PUTS: #{cmd.entity.as_string}"
+        puts "PUTS: #{cmd.entity.as_string} #{$!}"
       end
     end
   end

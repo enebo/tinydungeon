@@ -1,13 +1,19 @@
 require 'wreckem/component'
 
+# Attack 0-max_int (higher is better)
+AttackStat = Wreckem::Component::define_as_int
 # You can set a starting room via /bind
 BindRoom = Wreckem::Component::define_as_ref
 # Link to the container the item is contained within
 ContainedBy = Wreckem::Component::define_as_ref
 # Represents command input (generally from players)
 CommandLine = Wreckem::Component.define_as_string
+# Who are you in melee with
+CombatWithRef = Wreckem::Component::define_as_ref
 # Containers as have n of these links for each thing it contains
 Containee = Wreckem::Component::define_as_ref
+# Defense 0-max_int (higher is better)
+DefenseStat = Wreckem::Component::define_as_int
 # Object description
 Description = Wreckem::Component.define_as_string
 # Things which have this can echo
@@ -16,6 +22,8 @@ Echo = Wreckem::Component.define
 Entry = Wreckem::Component.define
 # Marker to indicate something is a container
 Container = Wreckem::Component.define
+# How many hit points do you have?
+HitPoints = Wreckem::Component.define_as_int
 # Link marker (only used as identifier if you want to update all links)
 Link = Wreckem::Component.define
 # Where the link entity is
@@ -44,4 +52,3 @@ OutputMessage = Wreckem::Component.define_as_string
 Timestamp = Wreckem::Component.define_as_int
 # Who sent something (like a message)
 Sender = Wreckem::Component.define_as_ref
-
