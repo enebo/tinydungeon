@@ -24,8 +24,8 @@ class LookCommand < Command
     hit_points = entity.one(HitPoints)
 
     if hit_points
-      maxhp, name, description = entity.one(MaxHitPoints, Name, Description).map(&:value)
-       "(\##{entity.id}) #{name} - #{description} [hp: #{hit_points} of #{maxhp}]"
+      maxhp, name, description, level = entity.one(MaxHitPoints, Name, Description, Level).map(&:value)
+       "(\##{entity.id}) #{name} - #{description} [hp: #{hit_points}(#{maxhp}) lvl: #{level}]"
     else
       name, description = entity.one(Name, Description).map(&:value)
       "(\##{entity.id}) #{description} - #{name}"

@@ -15,7 +15,7 @@ require 'tinydungeon/systems/process_commands_system'
 require 'tinydungeon/systems/hear_things_system'
 
 class TinyDungeon < Wreckem::Game
-  attr_reader :connections, :players, :entry
+  attr_reader :connections, :players, :entry, :combat_constants
   include ContainerHelper, LinkHelper
 
   attr_reader :stats
@@ -33,6 +33,7 @@ class TinyDungeon < Wreckem::Game
   def register_entities
     unless Entry.all.to_a.empty? # Entry room is a required component
       @entry = Entry.all.to_a.first.entity
+      @combat_constants = CombatConstants.all.to_a.first.entity
       return
     end
 
@@ -43,8 +44,16 @@ class TinyDungeon < Wreckem::Game
     @admin = create_player("Neo", "The one", nil)
     @entry.has Owner.new(@admin) # bootstrapping...who came first
 
-    create_monster('Goblozowie', 'A green goblin', @entry, @admin)
-    create_monster('Goblobowie', 'A green goblin', @entry, @admin)
+    create_monster('Goblozowie', 'A green goblin', 1, @entry, @admin)
+    create_monster('Goblobowie', 'A green goblin', 2, @entry, @admin)
+    create_monster('Orciepop', 'A blue Orc', 3, @entry, @admin)
+    create_monster('Orcjagger', 'A blue Orc', 4, @entry, @admin)
+    
+    @combat_constants = Wreckem::Entity.is! do |e|
+      e.has LevelMod.new 0.12
+      e.has AttackMod.new 0.01
+      e.has DefenseMod.new 0.01
+    end
   end
 
   def register_async_systems
@@ -62,6 +71,7 @@ class TinyDungeon < Wreckem::Game
   def create_player(name=nil, description=nil, room=entry)
     create_object(name, description, @admin).tap do |player|
       player.is Player, Container
+      player.has Level.new(1)
       create_combat_stats(player, 5, 5, 5)
       add_to_container(room, player) if room
     end
@@ -78,9 +88,10 @@ class TinyDungeon < Wreckem::Game
     create_stat(entity, DefenseStat, MaxDefenseStat, defense_value)
   end
   
-  def create_monster(name, description, room, owner)
+  def create_monster(name, description, level, room, owner)
     create_object(name, description, owner).tap do |mob|
       mob.is NPC
+      mob.has Level.new(level)
       create_combat_stats(mob, 6, 6, 6)
       add_to_container(room, mob)
     end    

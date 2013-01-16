@@ -12,6 +12,7 @@ class CombatSystem < Wreckem::System
   def initialize(game)
     super(game)
     @time = Time.now - COMBAT_TICK
+    @attack_mod, @defense_mod, @level_mod = game.combat_constants.one(AttackMod, DefenseMod, LevelMod).map(&:value)
   end
   
   def process
@@ -20,15 +21,17 @@ class CombatSystem < Wreckem::System
     @time = Time.now
 
     list = []
-    CombatWithRef.intersects(AttackStat, HitPoints) do |combat_with, attack|
-      list << [combat_with, attack.value]
+    CombatWithRef.intersects(AttackStat, Level) do |combat_with, attack, level|
+      list << [combat_with, attack.value, level.value]
     end
     
-    list.sort { |a, b| a[1] <=> b[1] }.each do |combat_with, attacker_attack|
+    list.sort { |a, b| a[1] <=> b[1] }.each do |combat_with, attacker_attack, attacker_level|
       attacker, defender = combat_with.entity, combat_with.to_entity
-      defender_name, defender_defense, defender_hp = defender.one(Name, DefenseStat, HitPoints)
+      defender_name, defender_defense, defender_hp, defender_level = defender.one(Name, DefenseStat, HitPoints, Level)
       hp = defender_hp.value
 
+      # FIXME: Ordering might be useful in query
+      # FIXME: Attacker who has died still can land a blow
       # Only allow attacker to land blow if they still have any hps left
       if hp <= 0
         combat_with.delete
@@ -37,8 +40,8 @@ class CombatSystem < Wreckem::System
       
       attacker_name = attacker.one(Name)
       
-      if (defender_defense.value < attacker_attack)
-        damage = attacker_attack - defender_defense.value
+      if hit!(attacker_level, defender_level.value, attacker_attack, defender_defense.value)
+        damage = 1
         defender_hp.value = hp - damage
         defender_hp.save
         
@@ -56,5 +59,16 @@ class CombatSystem < Wreckem::System
         output_others attacker, "#{attacker_name} misses #{defender_name}."
       end
     end
+  end
+  
+  def hit!(a_level, b_level, a_attack, b_defense)
+    puts "a_level #{a_level}, b_level #{b_level}, a_attack #{a_attack} b_defense #{b_defense}"
+    level_percentage = (a_level * @level_mod) - (b_level * @level_mod)
+    stuff_percentage = (a_attack * @attack_mod) - (b_defense * @defense_mod)
+    rand_value = rand
+    result = (level_percentage + stuff_percentage + 0.5)
+    
+    puts "RV #{rand_value}, RS: #{result} LP #{level_percentage} SP #{stuff_percentage}"
+    rand_value < result
   end
 end

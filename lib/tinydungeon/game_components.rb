@@ -1,5 +1,7 @@
 require 'wreckem/component'
 
+# Attack modifier
+AttackMod = Wreckem::Component.define_as_float
 # Attack 0-max_int (higher is better)
 AttackStat = Wreckem::Component::define_as_int
 # You can set a starting room via /bind
@@ -8,10 +10,14 @@ BindRoom = Wreckem::Component::define_as_ref
 ContainedBy = Wreckem::Component::define_as_ref
 # Represents command input (generally from players)
 CommandLine = Wreckem::Component.define_as_string
+# entity hold combat stats
+CombatConstants = Wreckem::Component::define
 # Who are you in melee with
 CombatWithRef = Wreckem::Component::define_as_ref
 # Containers as have n of these links for each thing it contains
 Containee = Wreckem::Component::define_as_ref
+# Defense modifier
+DefenseMod = Wreckem::Component.define_as_float
 # Defense 0-max_int (higher is better)
 DefenseStat = Wreckem::Component::define_as_int
 # Object description
@@ -20,10 +26,16 @@ Description = Wreckem::Component.define_as_string
 Echo = Wreckem::Component.define
 # The main place where players enter is not BindRoom set
 Entry = Wreckem::Component.define
+# Experience of entity
+Experience = Wreckem::Component.define_as_int
 # Marker to indicate something is a container
 Container = Wreckem::Component.define
 # How many hit points do you have?
 HitPoints = Wreckem::Component.define_as_int
+# Level of player
+Level = Wreckem::Component.define_as_int
+# Level Combat Mode
+LevelMod = Wreckem::Component.define_as_float
 # Link marker (only used as identifier if you want to update all links)
 Link = Wreckem::Component.define
 # Where the link entity is
